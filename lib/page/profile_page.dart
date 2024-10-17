@@ -8,49 +8,57 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, bottom: 16.0, right: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              CircleAvatar(
-                radius: 100,
-                backgroundColor: Colors.grey.shade300,
-                child: Icon(
-                  Icons.person,
-                  size: 50,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 4,
-                child: GestureDetector(
-                  onTap: () {
-                    // Action for editing profile picture
-                  },
-                  child: const CircleAvatar(
-                    radius: 16,
-                    backgroundColor: Colors.green,
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 16,
+    return Scaffold(
+      backgroundColor: const Color(0xfff2f8f4),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 16.0, bottom: 16.0, right: 16.0, top: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 100,
+                      backgroundColor: Colors.grey.shade300,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.grey.shade700,
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      bottom: 0,
+                      right: 4,
+                      child: GestureDetector(
+                        onTap: () {
+                          // Action for editing profile picture
+                        },
+                        child: const CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.green,
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                ProfileField(label: 'Full Name', value: 'Full Name'),
+                ProfileField(label: 'Username', value: 'Username'),
+                ProfileField(label: 'email', value: '@gmail.com'),
+                ProfileField(label: 'Phone', value: 'No Phone'),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
-          ProfileField(label: 'Full Name', value: 'Full Name'),
-          ProfileField(label: 'Username', value: 'Username'),
-          ProfileField(label: 'email', value: '@gmail.com'),
-          ProfileField(label: 'Phone', value: 'No Phone'),
-        ],
+        ),
       ),
     );
   }

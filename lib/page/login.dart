@@ -21,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
         child: Form(
           key: _formKey,
           child: Container(
-            margin: const EdgeInsets.only(left: 36, top: 8, right: 36, bottom: 8),
             child: Column(
               children: [
                 header(context),
@@ -111,7 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                 textAlign: TextAlign.left,
               ),
             ),
-            password(controller: passwordController,label: 'Password',),
+            password(
+              controller: passwordController,
+              label: 'Password',
+            ),
           ],
         ),
         const SizedBox(
@@ -123,9 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (_formKey.currentState!.validate()) {
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+                  Navigator.pushNamed(context, '/home');
                 }
               },
               style: const ButtonStyle(
@@ -180,7 +180,6 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
   }
-
 }
 
 header(context) {
@@ -188,7 +187,7 @@ header(context) {
     children: [
       SizedBox(
         child: Center(child: Text('Logo')),
-        height: 255,
+        height: 150,
       ),
       Text(
         'Login to Your Account',
@@ -214,7 +213,7 @@ class password extends StatefulWidget {
     super.key,
     required this.controller,
     required this.label,
-    this.isLogin=true,
+    this.isLogin = true,
   });
 
   @override
@@ -224,11 +223,11 @@ class password extends StatefulWidget {
 class _passwordState extends State<password> {
   bool _obscureText = true; // Menyimpan status visibility password
   final rules = {
-          DigitValidationRule(),
-          UppercaseValidationRule(),
-          SpecialCharacterValidationRule(),
-          MinCharactersValidationRule(6),
-        };
+    DigitValidationRule(),
+    UppercaseValidationRule(),
+    SpecialCharacterValidationRule(),
+    MinCharactersValidationRule(6),
+  };
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -249,27 +248,28 @@ class _passwordState extends State<password> {
         hasStrengthIndicator: false,
         controller: widget.controller,
         validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Password is required';
-                  }
+          if (value == null || value.isEmpty) {
+            return 'Password is required';
+          }
 
-                  if (!widget.isLogin) {
-                    for (var rule in rules) {
-                      if (!rule.validate(value)) {
-                        return rule.name;
-                      }
-                    }
-                  }
+          if (!widget.isLogin) {
+            for (var rule in rules) {
+              if (!rule.validate(value)) {
+                return rule.name;
+              }
+            }
+          }
 
-                  return null;
-                },
+          return null;
+        },
         obscureText: _obscureText,
         decoration: InputDecoration(
           suffixIcon: IconButton(
             icon: Icon(
               _obscureText ? Icons.visibility : Icons.visibility_off,
             ),
-            onPressed: _togglePasswordVisibility, // Mengubah visibility saat ikon ditekan
+            onPressed:
+                _togglePasswordVisibility, // Mengubah visibility saat ikon ditekan
           ),
           labelText: widget.label,
           labelStyle: const TextStyle(
@@ -280,7 +280,8 @@ class _passwordState extends State<password> {
             letterSpacing: -0.408,
           ),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 29.0, vertical: 13,
+            horizontal: 29.0,
+            vertical: 13,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(1000),
@@ -311,9 +312,7 @@ footer(context) {
         height: 48,
         width: 312,
         child: ElevatedButton(
-          onPressed: () {
-
-          },
+          onPressed: () {},
           style: ButtonStyle(
             backgroundColor: const WidgetStatePropertyAll(Colors.white),
             elevation: const WidgetStatePropertyAll(2),
