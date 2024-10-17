@@ -3,47 +3,52 @@ import 'package:flutter/material.dart';
 class CommunityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Cari di komunitas',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
+    return Scaffold(
+      backgroundColor: const Color(0xfff2f8f4),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Cari di komunitas',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                      ),
                     ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
                   ),
-                ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    icon: const Icon(Icons.filter_list),
+                    onPressed: () {
+                      // Add filter
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: const Icon(Icons.filter_list),
-                onPressed: () {
-                  // Add filter
+            ),
+
+            // Scrollable list of posts
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5, // Example with 5 items
+                itemBuilder: (context, index) {
+                  return PostCard();
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-
-        // Scrollable list of posts
-        Expanded(
-          child: ListView.builder(
-            itemCount: 5, // Example with 5 items
-            itemBuilder: (context, index) {
-              return PostCard();
-            },
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -95,7 +100,7 @@ class PostCard extends StatelessWidget {
                         Text(
                           'Krisna Andika',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             fontSize: 16,
                           ),
                         ),
