@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tomacare/page/login.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:fancy_password_field/fancy_password_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -9,6 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -19,18 +22,19 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff2f8f4),
-      body: Container(
-          // margin: const EdgeInsets.only(left: 36, top: 8, right: 36, bottom: 8),
-          padding: EdgeInsets.all(36),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 43,
-              ),
-              appBar(),
-              registerForm()
-            ],
-          )),
+      body: SingleChildScrollView(
+        child: Container(
+            padding: EdgeInsets.all(36),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 43,
+                ),
+                appBar(),
+                registerForm()
+              ],
+            )),
+      ),
     );
   }
 
@@ -39,16 +43,15 @@ class _RegisterPageState extends State<RegisterPage> {
       mainAxisAlignment: MainAxisAlignment.start, // Menempatkan ikon di kiri
       children: [
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             size: 24,
           ),
           onPressed: () {
-            // Logika untuk kembali ke halaman sebelumnya
             Navigator.pop(context);
           },
         ),
-        Expanded(
+        const Expanded(
           child: Text(
             'Register',
             textAlign: TextAlign.center,
@@ -59,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 40,
         )
       ],
@@ -68,43 +71,46 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget registerForm() {
     return Column(crossAxisAlignment: CrossAxisAlignment.center , children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            formLabel('Enter your email'),
-            formField(emailController, 'Email'),
+        Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              formLabel('Enter your email'),
+              formField(emailController, 'Email'),
 
-            const SizedBox(
-              height: 30,
-            ),
-            formLabel('Enter your fullname'),
-            formField(fullNameController, 'Fullname'),
+              const SizedBox(
+                height: 20,
+              ),
+              formLabel('Enter your fullname'),
+              formField(fullNameController, 'Fullname'),
 
-            const SizedBox(
-              height: 30,
-            ),
-            formLabel('Enter your username'),
-            formField(usernameController, 'Username'),
+              const SizedBox(
+                height: 20,
+              ),
+              formLabel('Enter your username'),
+              formField(usernameController, 'Username'),
 
-            const SizedBox(
-              height: 30,
-            ),
-            formLabel('Enter your Password'),
-            formField(passwordController, 'Password', isPassword: true),
+              const SizedBox(
+                height: 20,
+              ),
+              formLabel('Enter your Password'),
+              formField(passwordController, 'Password', isPassword: true),
 
-            const SizedBox(
-              height: 30,
-            ),
-            formLabel('Verify your Password'),
-            formField(passwordValidationController, 'Password', isPassword: true),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              formLabel('Verify your Password'),
+              formField(passwordValidationController, 'Verify Password', isPassword: true),
+            ],
+          ),
         ),
 
       const SizedBox(
-        height: 50,
+        height: 40,
       ),
       submitButton()
     ]);
@@ -128,11 +134,48 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget formField(TextEditingController controller, String hintText, {isPassword = false}) {
+    final valRuleFullName = {
+      MinCharactersValidationRule(3),
+      MaxCharactersValidationRule(100),
+    };
+    final valRuleUsername = {
+      MinCharactersValidationRule(3),
+      MaxCharactersValidationRule(50)
+    };
+
     if (!isPassword){
       return SizedBox(
-        height: 48,
+        // height: 48 + 22,
         width: 312,
-        child: TextField(
+        child: TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return '$hintText is required!';
+            }
+
+            if (hintText == 'Email') {
+              if (!EmailValidator.validate(value)){
+                return 'Invalid email!';
+              }
+            }
+
+            if (hintText == 'Fullname') {
+              for (var rule in valRuleFullName) {
+                if (!rule.validate(value)) {
+                  return rule.name;
+                }
+              }
+            }
+
+            if (hintText == 'Username') {
+              for (var rule in valRuleUsername) {
+                if (!rule.validate(value)) {
+                  return rule.name;
+                }
+              }
+            }
+
+            return null;          },
           controller: controller,
           decoration: InputDecoration(
               labelText: hintText,
@@ -150,14 +193,23 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     } else {
-      return password();
+      if (hintText == 'Verify Password') {
+        return password(controller: controller,label: hintText, isLogin: true,);
+      }
+      return password(controller: controller,label: hintText, isLogin: false,);
     }
   }
 
   Widget submitButton(){
     return Center(
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Processing Data')),
+              );
+            }
+          },
           style: const ButtonStyle(
             backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
             fixedSize: WidgetStatePropertyAll(Size(312, 48)),
