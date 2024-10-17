@@ -5,77 +5,82 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xfff2f8f4),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffffffff),
-        toolbarHeight: 10,
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Poppins',
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 16, right: 40, top: 35),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Hi, Naufal',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    height: 22 / 20,
-                    letterSpacing: -0.408,
+      home: Scaffold(
+        backgroundColor: const Color(0xfff2f8f4),
+        appBar: AppBar(
+          backgroundColor: const Color(0xffffffff),
+          toolbarHeight: 10,
+        ),
+        body: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 16, right: 40, top: 35),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Hi, Naufal',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      height: 22 / 20,
+                      letterSpacing: -0.408,
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 40,
-                ),
-              ],
+                  Icon(
+                    Icons.circle,
+                    size: 40,
+                  ),
+                ],
+              ),
             ),
-          ),
-          weatherInfo(),
-          Container(
-            margin: const EdgeInsets.only(left: 15, top: 22),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Tanamanmu',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700, // Bold weight (700)
-                    height: 22 / 20, // line-height / font-size
-                    letterSpacing: -0.408, // sesuai dengan spesifikasi
+            weatherInfo(),
+            Container(
+              margin: const EdgeInsets.only(left: 15, top: 22),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Tanamanmu',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700, // Bold weight (700)
+                      height: 22 / 20, // line-height / font-size
+                      letterSpacing: -0.408, // sesuai dengan spesifikasi
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 22,
-                ),
-                // ListView horizontal
-                myPlants(),
-                const SizedBox(
-                  height: 22,
-                ),
-                const Text(
-                  'Rekomendasi Untukmu',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700, // Bold weight (700)
-                    height: 22 / 20, // line-height / font-size
-                    letterSpacing: -0.408, // sesuai dengan spesifikasi
+                  const SizedBox(
+                    height: 22,
                   ),
-                ),
-                const SizedBox(
-                  height: 22,
-                ),
-                // ListView horizontal
-                recomendation(),
-              ],
+                  // ListView horizontal
+                  myPlants(),
+                  const SizedBox(
+                    height: 22,
+                  ),
+                  const Text(
+                    'Rekomendasi Untukmu',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700, // Bold weight (700)
+                      height: 22 / 20, // line-height / font-size
+                      letterSpacing: -0.408, // sesuai dengan spesifikasi
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 22,
+                  ),
+                  // ListView horizontal
+                  recomendation(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
