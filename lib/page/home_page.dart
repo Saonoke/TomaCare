@@ -22,7 +22,6 @@ class HomePage extends StatelessWidget {
                   'Hi, Naufal',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     height: 22 / 20,
@@ -45,7 +44,6 @@ class HomePage extends StatelessWidget {
                 const Text(
                   'Tanamanmu',
                   style: TextStyle(
-                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.w700, // Bold weight (700)
                     height: 22 / 20, // line-height / font-size
@@ -63,7 +61,6 @@ class HomePage extends StatelessWidget {
                 const Text(
                   'Rekomendasi Untukmu',
                   style: TextStyle(
-                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.w700, // Bold weight (700)
                     height: 22 / 20, // line-height / font-size
@@ -128,7 +125,6 @@ class HomePage extends StatelessWidget {
                             child: Text(
                               '10k Likes',
                               style: TextStyle(
-                                fontFamily: 'Poppins',
                                 fontSize: 8,
                                 fontWeight: FontWeight.w500,
                                 height: 22 / 11, // line-height / font-size
@@ -202,7 +198,6 @@ class HomePage extends StatelessWidget {
               Text(
                 'Malang, Indonesia',
                 style: TextStyle(
-                    fontFamily: 'Poppins',
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     height: 22 / 18, // line-height / font-size
@@ -228,7 +223,6 @@ class HomePage extends StatelessWidget {
                     '18',
                     style: TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Poppins',
                       fontSize: 60,
                       fontWeight: FontWeight.w700,
                       height: 22 / 25, // line-height / font-size
@@ -239,7 +233,6 @@ class HomePage extends StatelessWidget {
                     'Rain Wind',
                     style: TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.w400, // normal weight (400)
                       height: 22 / 18, // line-height / font-size
