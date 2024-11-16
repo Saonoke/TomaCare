@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tomacare/page/login.dart';
+import 'package:tomacare/presentation/auth/page/login.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fancy_password_field/fancy_password_field.dart';
 
