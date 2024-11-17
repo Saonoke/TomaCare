@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tomacare/Models/plants.dart';
-import 'package:tomacare/page/home_page.dart';
-import 'page/login.dart';
-import 'page/register.dart';
-// import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
+import 'package:tomacare/presentation/auth/page/register.dart';
+import 'package:tomacare/presentation/page/home_page.dart';
+import 'package:tomacare/presentation/splashscreen.dart';
+// import 'package:tomacare/presentation/page/home_page.dart';
+import 'presentation/auth/page/login.dart';
+// import 'presentation/page/register.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ChangeNotifierProvider(
-    create: (context) => Plants(),
-    child: MaterialApp(
-      initialRoute: '/login',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Poppins',
+  runApp(
+    BlocProvider(
+      create: (_) => AuthBloc(),
+      child: MaterialApp(
+        initialRoute: '/',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+        ),
+        routes: {
+          '/login': (context) => LoginPage(),
+          '/home': (context) => HomePage(),
+          '/register': (context) => RegisterPage(),
+          '/': (context) => Splashscreen(),
+        },
       ),
-      routes: {
-        '/home': (context) => HomePage(),
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage()
-      },
     ),
-  ));
+  );
 }

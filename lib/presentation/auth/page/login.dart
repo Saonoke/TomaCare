@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_password_field/fancy_password_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -119,29 +122,39 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(
           height: 38,
         ),
-        Center(
-          child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  Navigator.pushNamed(context, '/home');
-                }
-              },
-              style: const ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
-                fixedSize: WidgetStatePropertyAll(Size(312, 48)),
-              ),
-              child: const Text(
-                'Masuk',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    height: 22 / 17,
-                    letterSpacing: -0.408),
-              )),
+        BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            // TODO: implement listener
+          },
+          builder: (context, state) {
+            return Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    print('start auth');
+                    context.read<AuthBloc>().add(LoginRequest(
+                        emailController.text, passwordController.text));
+                    // if (_formKey.currentState!.validate()) {
+                    //   // If the form is valid, display a snackbar. In the real world,
+                    //   // you'd often call a server or save the information in a database.
+                    //   Navigator.pushNamed(context, '/home');
+                    // }
+                  },
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
+                    fixedSize: WidgetStatePropertyAll(Size(312, 48)),
+                  ),
+                  child: const Text(
+                    'Masuk',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Poppins',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        height: 22 / 17,
+                        letterSpacing: -0.408),
+                  )),
+            );
+          },
         ),
         const SizedBox(
           height: 40,
@@ -183,10 +196,10 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 header(context) {
-  return const Column(
+  return Column(
     children: [
       SizedBox(
-        child: Center(child: Text('Logo')),
+        child: Center(child: Image.asset("images/color.png")),
         height: 150,
       ),
       Text(
