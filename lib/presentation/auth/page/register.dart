@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/auth/page/login.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fancy_password_field/fancy_password_field.dart';
@@ -70,45 +72,41 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget registerForm() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.center , children: [
-        Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              formLabel('Enter your email'),
-              formField(emailController, 'Email'),
-
-              const SizedBox(
-                height: 20,
-              ),
-              formLabel('Enter your fullname'),
-              formField(fullNameController, 'Fullname'),
-
-              const SizedBox(
-                height: 20,
-              ),
-              formLabel('Enter your username'),
-              formField(usernameController, 'Username'),
-
-              const SizedBox(
-                height: 20,
-              ),
-              formLabel('Enter your Password'),
-              formField(passwordController, 'Password', isPassword: true),
-
-              const SizedBox(
-                height: 20,
-              ),
-              formLabel('Verify your Password'),
-              formField(passwordValidationController, 'Verify Password', isPassword: true),
-            ],
-          ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 30,
+            ),
+            formLabel('Enter your email'),
+            formField(emailController, 'Email'),
+            const SizedBox(
+              height: 20,
+            ),
+            formLabel('Enter your fullname'),
+            formField(fullNameController, 'Fullname'),
+            const SizedBox(
+              height: 20,
+            ),
+            formLabel('Enter your username'),
+            formField(usernameController, 'Username'),
+            const SizedBox(
+              height: 20,
+            ),
+            formLabel('Enter your Password'),
+            formField(passwordController, 'Password', isPassword: true),
+            const SizedBox(
+              height: 20,
+            ),
+            formLabel('Verify your Password'),
+            formField(passwordValidationController, 'Verify Password',
+                isPassword: true),
+          ],
         ),
-
+      ),
       const SizedBox(
         height: 40,
       ),
@@ -133,7 +131,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget formField(TextEditingController controller, String hintText, {isPassword = false}) {
+  Widget formField(TextEditingController controller, String hintText,
+      {isPassword = false}) {
     final valRuleFullName = {
       MinCharactersValidationRule(3),
       MaxCharactersValidationRule(100),
@@ -143,7 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
       MaxCharactersValidationRule(50)
     };
 
-    if (!isPassword){
+    if (!isPassword) {
       return SizedBox(
         // height: 48 + 22,
         width: 312,
@@ -154,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
             }
 
             if (hintText == 'Email') {
-              if (!EmailValidator.validate(value)){
+              if (!EmailValidator.validate(value)) {
                 return 'Invalid email!';
               }
             }
@@ -175,7 +174,8 @@ class _RegisterPageState extends State<RegisterPage> {
               }
             }
 
-            return null;          },
+            return null;
+          },
           controller: controller,
           decoration: InputDecoration(
               labelText: hintText,
@@ -187,43 +187,61 @@ class _RegisterPageState extends State<RegisterPage> {
                 letterSpacing: -0.408,
               ),
               contentPadding:
-              const EdgeInsets.symmetric(horizontal: 29.0, vertical: 13),
-              border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(1000))),
+                  const EdgeInsets.symmetric(horizontal: 29.0, vertical: 13),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(1000))),
         ),
       );
     } else {
       if (hintText == 'Verify Password') {
-        return password(controller: controller,label: hintText, isLogin: true,);
+        return password(
+          controller: controller,
+          label: hintText,
+          isLogin: true,
+        );
       }
-      return password(controller: controller,label: hintText, isLogin: false,);
+      return password(
+        controller: controller,
+        label: hintText,
+        isLogin: false,
+      );
     }
   }
 
-  Widget submitButton(){
-    return Center(
-      child: ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Processing Data')),
-              );
-            }
-          },
-          style: const ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
-            fixedSize: WidgetStatePropertyAll(Size(312, 48)),
-          ),
-          child: const Text(
-            'Register',
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Poppins',
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                height: 22 / 17,
-                letterSpacing: -0.408),
-          )),
+  Widget submitButton() {
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return Center(
+          child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  context.read<AuthBloc>().add(Register(
+                      emailController.text,
+                      fullNameController.text,
+                      usernameController.text,
+                      passwordController.text));
+                  
+                }
+              },
+              style: const ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
+                fixedSize: WidgetStatePropertyAll(Size(312, 48)),
+              ),
+              child: const Text(
+                'Register',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Poppins',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    height: 22 / 17,
+                    letterSpacing: -0.408),
+              )),
+        );
+      },
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tomacare/main.dart';
+
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
