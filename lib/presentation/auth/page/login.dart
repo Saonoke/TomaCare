@@ -17,6 +17,13 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff2f8f4),
@@ -131,13 +138,10 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                   onPressed: () {
                     print('start auth');
-                    context.read<AuthBloc>().add(LoginRequest(
-                        emailController.text, passwordController.text));
-                    // if (_formKey.currentState!.validate()) {
-                    //   // If the form is valid, display a snackbar. In the real world,
-                    //   // you'd often call a server or save the information in a database.
-                    //   Navigator.pushNamed(context, '/home');
-                    // }
+                    if (_formKey.currentState!.validate()) {
+                      context.read<AuthBloc>().add(LoginRequest(
+                          emailController.text, passwordController.text));
+                    }
                   },
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
