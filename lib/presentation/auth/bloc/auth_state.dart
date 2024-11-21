@@ -14,6 +14,9 @@ final class AuthLoading extends AuthState {
   final bool isLoading;
 
   const AuthLoading({required this.isLoading});
+
+  @override
+  List<Object> get props => [isLoading];
 }
 
 final class AuthSucess extends AuthState {
