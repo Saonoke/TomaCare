@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/auth/page/register.dart';
+import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
+import 'package:tomacare/presentation/comunity/page/community_page.dart';
 import 'package:tomacare/presentation/page/home_page.dart';
 import 'package:tomacare/presentation/plants/pages/plant.dart';
 import 'package:tomacare/presentation/splashscreen.dart';
@@ -22,8 +24,11 @@ void main() {
         ),
         routes: {
           '/login': (context) => LoginPage(),
-          '/home': (context) => HomePage(),
           '/register': (context) => RegisterPage(),
+          '/home': (context) => BlocProvider(
+                create: (context) => ComunityBloc(),
+                child: CommunityPage(),
+              ),
           '/': (context) => Splashscreen(),
         },
       ),
