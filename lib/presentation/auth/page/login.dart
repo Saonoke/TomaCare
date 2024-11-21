@@ -339,11 +339,11 @@ footer(context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                'https://s3-alpha-sig.figma.com/img/0e8c/5336/ec40b19b6983a179020e0e933a042d6b?Expires=1730073600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gFSHSh7xi2ah8QPOVIo6XTa15cwoCBDwohSjmPhSMmwCOUi2D2fCznUog1Ox3oSY2WxJ2ZTnbGHybkuPfLEbPet0kyMGd7Q40fd97pp~EMhcCGs8YWUdw54ZIsWYHfWTZoHLLOSzl8RtcIpQQop0WGrS-0sFPhZv1sF-lYkjwsZ67fdIVkTDBFc94YHCw-jL~ZIgW8w4fiJKbc9VSvFwiT8UclYjL~2-oMzTo2o6AyITmBCSHHH3H6UgoDbLgH~g-~Zw-KAaM-H37gYhZhK-IS~~i9GL1vEoje-1fxB3gYzpAM~bKJXK27vf8oASx61rxzc4aCYZj-TUL4cDOrRvcQ__',
-                width: 24,
-                height: 24,
-              ),
+              // Image.network(
+              //   'https://s3-alpha-sig.figma.com/img/0e8c/5336/ec40b19b6983a179020e0e933a042d6b?Expires=1730073600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gFSHSh7xi2ah8QPOVIo6XTa15cwoCBDwohSjmPhSMmwCOUi2D2fCznUog1Ox3oSY2WxJ2ZTnbGHybkuPfLEbPet0kyMGd7Q40fd97pp~EMhcCGs8YWUdw54ZIsWYHfWTZoHLLOSzl8RtcIpQQop0WGrS-0sFPhZv1sF-lYkjwsZ67fdIVkTDBFc94YHCw-jL~ZIgW8w4fiJKbc9VSvFwiT8UclYjL~2-oMzTo2o6AyITmBCSHHH3H6UgoDbLgH~g-~Zw-KAaM-H37gYhZhK-IS~~i9GL1vEoje-1fxB3gYzpAM~bKJXK27vf8oASx61rxzc4aCYZj-TUL4cDOrRvcQ__',
+              //   width: 24,
+              //   height: 24,
+              // ),
               const SizedBox(width: 8),
               const Text(
                 'Sign in with Google',
