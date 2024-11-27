@@ -7,6 +7,8 @@ import 'package:tomacare/presentation/comunity/page/community_page.dart';
 import 'package:tomacare/presentation/page/home_page.dart';
 import 'package:tomacare/presentation/plants/pages/plant.dart';
 import 'package:tomacare/presentation/splashscreen.dart';
+import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
+import 'package:tomacare/presentation/user/page/profile_page.dart';
 // import 'package:tomacare/presentation/page/home_page.dart';
 import 'presentation/auth/page/login.dart';
 // import 'presentation/page/register.dart';
@@ -26,8 +28,8 @@ void main() {
           '/login': (context) => LoginPage(),
           '/register': (context) => RegisterPage(),
           '/home': (context) => BlocProvider(
-                create: (context) => ComunityBloc(),
-                child: CommunityPage(),
+                create: (context) => ProfileBloc(),
+                child: ProfilePage(),
               ),
           '/': (context) => Splashscreen(),
         },
