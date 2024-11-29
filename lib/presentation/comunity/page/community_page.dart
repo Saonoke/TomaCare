@@ -4,12 +4,25 @@ import 'package:tomacare/domain/entities/post.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
 
-class CommunityPage extends StatefulWidget {
+class CommunityPage extends StatelessWidget {
+  const CommunityPage({super.key});
+
   @override
-  State<CommunityPage> createState() => _CommunityPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ComunityBloc(),
+      child: CommunityPageList(),
+    );
+  }
 }
 
-class _CommunityPageState extends State<CommunityPage> {
+class CommunityPageList extends StatefulWidget {
+  const CommunityPageList({super.key});
+  @override
+  State<CommunityPageList> createState() => _CommunityPageState();
+}
+
+class _CommunityPageState extends State<CommunityPageList> {
   @override
   void initState() {
     context.read<ComunityBloc>().add(ComunityStarted());

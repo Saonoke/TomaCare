@@ -1,11 +1,10 @@
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/auth/page/register.dart';
-import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
-import 'package:tomacare/presentation/comunity/page/community_page.dart';
-import 'package:tomacare/presentation/page/home_page.dart';
-import 'package:tomacare/presentation/plants/pages/plant.dart';
+import 'package:tomacare/presentation/homepage/page/home_page.dart';
 import 'package:tomacare/presentation/splashscreen.dart';
 import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
 import 'package:tomacare/presentation/user/page/profile_page.dart';
@@ -15,6 +14,8 @@ import 'presentation/auth/page/login.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  CloudinaryContext.cloudinary =
+      Cloudinary.fromCloudName(cloudName: 'dtzlizlrs');
   runApp(
     BlocProvider(
       create: (_) => AuthBloc(),
@@ -27,10 +28,7 @@ void main() {
         routes: {
           '/login': (context) => LoginPage(),
           '/register': (context) => RegisterPage(),
-          '/home': (context) => BlocProvider(
-                create: (context) => ProfileBloc(),
-                child: ProfilePage(),
-              ),
+          '/home': (context) => HomePage(),
           '/': (context) => Splashscreen(),
         },
       ),
