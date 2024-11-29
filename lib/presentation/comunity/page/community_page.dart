@@ -4,12 +4,25 @@ import 'package:tomacare/domain/entities/post.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
 
-class CommunityPage extends StatefulWidget {
+class CommunityPage extends StatelessWidget {
+  const CommunityPage({super.key});
+
   @override
-  State<CommunityPage> createState() => _CommunityPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ComunityBloc(),
+      child: CommunityPageList(),
+    );
+  }
 }
 
-class _CommunityPageState extends State<CommunityPage> {
+class CommunityPageList extends StatefulWidget {
+  const CommunityPageList({super.key});
+  @override
+  State<CommunityPageList> createState() => _CommunityPageState();
+}
+
+class _CommunityPageState extends State<CommunityPageList> {
   @override
   void initState() {
     context.read<ComunityBloc>().add(ComunityStarted());
@@ -82,7 +95,7 @@ class _CommunityPageState extends State<CommunityPage> {
                       },
                     );
                   } else if (state is ComunityError) {
-                    if (state.message == 'Exception: Signature has expired.'){
+                    if (state.message == 'Exception: Signature has expired.') {
                       context.read<AuthBloc>().add(Logout());
                     }
                     return Center(
@@ -133,12 +146,12 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-
   void toggleLike() {
     context.read<ComunityBloc>().add(PostReaction(widget.postId, 'Like'));
     setState(() {
       widget.isLiked = !widget.isLiked;
-      if (widget.isLiked) widget.isDisliked = false; // Dislike is deactivated if Like is pressed
+      if (widget.isLiked)
+        widget.isDisliked = false; // Dislike is deactivated if Like is pressed
     });
   }
 
@@ -146,7 +159,8 @@ class _PostCardState extends State<PostCard> {
     context.read<ComunityBloc>().add(PostReaction(widget.postId, 'Dislike'));
     setState(() {
       widget.isDisliked = !widget.isDisliked;
-      if (widget.isDisliked) widget.isLiked = false; // Like is deactivated if Dislike is pressed
+      if (widget.isDisliked)
+        widget.isLiked = false; // Like is deactivated if Dislike is pressed
     });
   }
 
@@ -184,9 +198,7 @@ class _PostCardState extends State<PostCard> {
                     radius: 20,
                     backgroundColor: Colors.grey.shade300,
                     backgroundImage: NetworkImage(widget.profileImg),
-                    onBackgroundImageError: (_, __) {
-
-                    },
+                    onBackgroundImageError: (_, __) {},
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -226,7 +238,9 @@ class _PostCardState extends State<PostCard> {
                     children: [
                       IconButton(
                         icon: Icon(
-                          widget.isLiked ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined,
+                          widget.isLiked
+                              ? Icons.thumb_up_alt
+                              : Icons.thumb_up_alt_outlined,
                           color: widget.isLiked ? Colors.blue : Colors.grey,
                         ),
                         onPressed: toggleLike,
@@ -256,4 +270,3 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
-
