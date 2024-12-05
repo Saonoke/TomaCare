@@ -16,7 +16,6 @@ import 'package:tomacare/domain/entities/information.dart';
 import 'package:tomacare/presentation/camera/bloc/camera_bloc.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/pages/CreatePlant.dart';
-import 'package:tomacare/service/cloudinary.dart';
 
 // import 'package:path_provider/path_provider.dart';
 
@@ -108,7 +107,7 @@ class _CameraAppState extends State<CameraApp> {
                 builder: (context) {
                   return AlertDialog(
                     title: Text('gagal'),
-                    content: Text('ahha'),
+                    content: Text(state.message),
                   );
                 });
           } else if (state is CameraLoading) {
@@ -191,7 +190,6 @@ class _CameraAppState extends State<CameraApp> {
                             onPressed: () async {
                               try {
                                 XFile? image = await controller.takePicture();
-                                print(image.path);
                                 context.read<CameraBloc>()
                                   ..add(CameraProcess(image: image));
                               } catch (e) {
@@ -255,7 +253,10 @@ class DisplayPictureScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CreatePlantPages(image: image)));
+              builder: (context) => CreatePlantPages(
+                    image: image,
+                    predicted: predicted,
+                  )));
         },
         child: Icon(Icons.navigate_next_rounded),
       ),

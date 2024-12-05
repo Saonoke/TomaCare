@@ -6,3 +6,13 @@ sealed class WeatherEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class getWeather extends WeatherEvent {
+  final double longitude;
+  final double latitude;
+
+  const getWeather({required this.latitude, required this.longitude});
+
+  @override
+  List<Object> get props => [longitude, latitude];
+}

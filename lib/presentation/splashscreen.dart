@@ -22,9 +22,13 @@ class _SplashscreenState extends State<Splashscreen> {
     authStream = authBloc.stream.listen((state) {
       Future.delayed(const Duration(seconds: 2)).then((_) {
         if (mounted) {
-          state is AuthFailed
-              ? Navigator.pushNamed(context, '/login')
-              : Navigator.pushNamed(context, '/home');
+          switch (state) {
+            case AuthFailed():
+              Navigator.pushNamed(context, '/login');
+            case AuthSucess():
+              Navigator.pushNamed(context, '/home');
+            default:
+          }
         }
       });
     });

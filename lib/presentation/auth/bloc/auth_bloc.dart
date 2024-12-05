@@ -16,11 +16,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SaveAuth saveService = SaveAuth();
   AuthBloc() : super(AuthInitial()) {
     on<AppStarted>((event, emit) async {
-      final String? token = await saveService.getToken();
-      if (token == null) {
-        emit(AuthFailed('perlu login'));
-      } else {
-        emit(AuthSucess(token));
+      try {
+        final String? token = await saveService.getToken();
+
+        if (token == null) {
+          print('null');
+          emit(AuthFailed('perlu login'));
+        } else {
+          emit(AuthSucess(token));
+        }
+      } catch (e) {
+        print(e.toString());
+        emit(AuthFailed(e.toString()));
       }
     });
 
@@ -41,24 +48,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         add(LoginRequest(response['username'], response['password']));
       } catch (e) {
-        print('Error terjadi: $e');
+        emit(AuthFailed('gagal membuat user'));
       }
     });
 
     on<LoginRequest>((event, emit) async {
-      print('start auth bloc');
+      emit(AuthLoading(isLoading: true));
       try {
-        final String? response = await authService.login(
+        final Map<String, dynamic> response = await authService.login(
             emailOrUsername: event.emailOrUsername, password: event.password);
-
-        if (response != null) {
-          saveService.storeToken(response);
-          emit(AuthSucess(response));
-        } else {
-          emit(AuthFailed("gagal login"));
-        }
+        saveService.storeToken(response);
+        emit(AuthSucess(response['access_token']));
       } catch (e) {
-        print('Error terjadi login: $e');
+        emit(AuthFailed("gagal login"));
       }
     });
   }
