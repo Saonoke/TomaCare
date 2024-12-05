@@ -56,5 +56,15 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
         }
       }
     });
+
+    on<SearchComunity>((event, emit) async {
+      emit(ComunityLoading());
+      try {
+        final posts = await comunityService.getAll(event.searchQuery);
+        emit(ComunityLoaded(posts));
+      } catch (e) {
+        emit(ComunityError(e.toString()));
+      }
+    });
   }
 }

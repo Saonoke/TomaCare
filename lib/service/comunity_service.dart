@@ -32,25 +32,22 @@ class ComunityService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAll() async {
-    final url = Uri.parse('$baseurl/post/');
+  Future<List<Map<String, dynamic>>> getAll([String? query]) async {
+    final String queryString = query != null && query.isNotEmpty ? '?search=$query' : '';
+    final url = Uri.parse('$baseurl/post/$queryString');
+
     final String? token = await saveService.getToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'authorization': 'Bearer $token'
     };
 
-    final response = await http.get(
-      url,
-      headers: headers,
-    );
+    final response = await http.get(url, headers: headers);
 
     if (response.statusCode == HttpStatus.ok) {
       final List<dynamic> jsonData = jsonDecode(response.body);
       return jsonData.map((item) => item as Map<String, dynamic>).toList();
     } else {
-      // print(response.body);
-
       throw Exception(jsonDecode(response.body)['detail']);
     }
   }

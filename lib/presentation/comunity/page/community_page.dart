@@ -42,6 +42,9 @@ class _CommunityPageState extends State<CommunityPageList> {
                 children: [
                   Expanded(
                     child: TextField(
+                      onChanged: (value) {
+                        context.read<ComunityBloc>().add(SearchComunity(value.toString()));
+                      },
                       decoration: InputDecoration(
                         hintText: 'Cari di komunitas',
                         prefixIcon: const Icon(Icons.search),
@@ -95,7 +98,7 @@ class _CommunityPageState extends State<CommunityPageList> {
                       },
                     );
                   } else if (state is ComunityError) {
-                    if (state.message == 'Exception: Signature has expired.') {
+                    if (state.message == 'Exception: Token has expired.') {
                       context.read<AuthBloc>().add(Logout());
                     }
                     return Center(
