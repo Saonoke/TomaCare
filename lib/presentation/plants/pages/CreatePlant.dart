@@ -8,20 +8,26 @@ import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
 import 'package:tomacare/service/cloudinary.dart';
 
 class CreatePlantPages extends StatelessWidget {
-  const CreatePlantPages({super.key, required this.image});
+  const CreatePlantPages(
+      {super.key, required this.image, required this.predicted});
   final XFile? image;
+  final String predicted;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PlantsBloc(),
-      child: Addplant(image: image),
+      child: Addplant(
+        image: image,
+        predicted: predicted,
+      ),
     );
   }
 }
 
 class Addplant extends StatefulWidget {
-  const Addplant({super.key, required this.image});
+  const Addplant({super.key, required this.image, required this.predicted});
   final XFile? image;
+  final String predicted;
   @override
   State<Addplant> createState() => _AddplantState();
 }
@@ -71,7 +77,7 @@ class _AddplantState extends State<Addplant> {
                         labelStyle: TextStyle(fontSize: 14),
                         hintStyle: TextStyle(fontSize: 14),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 29, vertical: 13),
+                            horizontal: 24, vertical: 16),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(1000))),
                   ),
@@ -102,7 +108,7 @@ class _AddplantState extends State<Addplant> {
                         labelStyle: TextStyle(fontSize: 14),
                         hintStyle: TextStyle(fontSize: 14),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 29, vertical: 13),
+                            horizontal: 24, vertical: 16),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(1000))),
                   ),
@@ -127,7 +133,7 @@ class _AddplantState extends State<Addplant> {
                         ..add(PlantsCreate(
                             plant: Plant(
                                 title: nameController.text,
-                                condition: 'sakit',
+                                condition: widget.predicted,
                                 image_path: imagesUploaded['url'])));
                     },
                     style: ButtonStyle(
