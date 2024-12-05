@@ -130,9 +130,7 @@ class _LoginPageState extends State<LoginPage> {
           height: 38,
         ),
         BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return Center(
               child: ElevatedButton(
@@ -147,16 +145,18 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
                     fixedSize: WidgetStatePropertyAll(Size(312, 48)),
                   ),
-                  child: const Text(
-                    'Masuk',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Poppins',
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        height: 22 / 17,
-                        letterSpacing: -0.408),
-                  )),
+                  child: state is AuthLoading
+                      ? CircularProgressIndicator()
+                      : const Text(
+                          'Masuk',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Poppins',
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              height: 22 / 17,
+                              letterSpacing: -0.408),
+                        )),
             );
           },
         ),

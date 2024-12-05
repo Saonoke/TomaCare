@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomacare/domain/entities/post.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
+import 'package:tomacare/presentation/comunity/page/community_detail.dart';
+import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 
 class CommunityPage extends StatelessWidget {
   const CommunityPage({super.key});
@@ -32,7 +34,7 @@ class _CommunityPageState extends State<CommunityPageList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff2f8f4),
+      backgroundColor: neutral06,
       body: SafeArea(
         child: Column(
           children: [
@@ -56,13 +58,6 @@ class _CommunityPageState extends State<CommunityPageList> {
                         fillColor: Colors.grey[200],
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  IconButton(
-                    icon: const Icon(Icons.filter_list),
-                    onPressed: () {
-                      // Add filter
-                    },
                   ),
                 ],
               ),
@@ -171,103 +166,113 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        elevation: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Post image
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(15)),
-              child: Image.network(
-                widget.image, // Replace with actual image URL
-                height: 160,
-                width: double.infinity,
-                fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CommunityDetailPage()));
+        },
+        child: Card(
+          color: neutral06,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Post image
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(15)),
+                child: Image.network(
+                  widget.image, // Replace with actual image URL
+                  height: 160,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
 
-            // Post content
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.grey.shade300,
-                    backgroundImage: NetworkImage(widget.profileImg),
-                    onBackgroundImageError: (_, __) {},
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.username,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
+              // Post content
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.grey.shade300,
+                      backgroundImage: NetworkImage(widget.profileImg),
+                      onBackgroundImageError: (_, __) {},
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.username,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
                           ),
+                          Text(
+                            widget.date,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.title,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                thickness: 1,
+                color: neutral03,
+              ),
+              // Post actions
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            widget.isLiked
+                                ? Icons.thumb_up_alt
+                                : Icons.thumb_up_alt_outlined,
+                            color: widget.isLiked ? Colors.blue : Colors.grey,
+                          ),
+                          onPressed: toggleLike,
                         ),
-                        Text(
-                          widget.date,
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          widget.title,
-                          style: const TextStyle(fontSize: 14),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(
+                            widget.isDisliked
+                                ? Icons.thumb_down_alt
+                                : Icons.thumb_down_alt_outlined,
+                            color: widget.isDisliked ? Colors.red : Colors.grey,
+                          ),
+                          onPressed: toggleDislike,
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    const Text(
+                      '2 Jawaban',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
-            ),
-
-            // Post actions
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          widget.isLiked
-                              ? Icons.thumb_up_alt
-                              : Icons.thumb_up_alt_outlined,
-                          color: widget.isLiked ? Colors.blue : Colors.grey,
-                        ),
-                        onPressed: toggleLike,
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: Icon(
-                          widget.isDisliked
-                              ? Icons.thumb_down_alt
-                              : Icons.thumb_down_alt_outlined,
-                          color: widget.isDisliked ? Colors.red : Colors.grey,
-                        ),
-                        onPressed: toggleDislike,
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    '2 Jawaban',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

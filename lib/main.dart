@@ -8,6 +8,7 @@ import 'package:tomacare/presentation/homepage/page/home_page.dart';
 import 'package:tomacare/presentation/splashscreen.dart';
 import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
 import 'package:tomacare/presentation/user/page/profile_page.dart';
+import 'package:tomacare/presentation/weather/pages/weather_pages.dart';
 // import 'package:tomacare/presentation/page/home_page.dart';
 import 'presentation/auth/page/login.dart';
 // import 'presentation/page/register.dart';
@@ -30,6 +31,7 @@ void main() {
           '/register': (context) => RegisterPage(),
           '/home': (context) => HomePage(),
           '/': (context) => Splashscreen(),
+          '/weather': (context) => WeatherPages()
         },
       ),
     ),

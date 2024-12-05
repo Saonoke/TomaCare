@@ -21,12 +21,9 @@ class OpenPost extends ComunityEvent {
 class CreatePost extends ComunityEvent {
   final String title;
   final String body;
-  final String imagePath;
+  final XFile imagePath;
 
-  const CreatePost(
-      this.title,
-      this.body,
-      this.imagePath);
+  const CreatePost(this.title, this.body, this.imagePath);
 
   @override
   List<Object> get props => [title, body, imagePath];
@@ -37,10 +34,7 @@ class EditPost extends ComunityEvent {
   final String body;
   final String imagePath;
 
-  const EditPost(
-      this.title,
-      this.body,
-      this.imagePath);
+  const EditPost(this.title, this.body, this.imagePath);
 
   @override
   List<Object> get props => [title, body, imagePath];
@@ -49,10 +43,7 @@ class EditPost extends ComunityEvent {
 class PostReaction extends ComunityEvent {
   final int postId;
   final String reactionType;
-  const PostReaction(
-      this.postId,
-      this.reactionType
-      );
+  const PostReaction(this.postId, this.reactionType);
   @override
   List<Object> get props => [postId, reactionType];
 }
@@ -61,13 +52,11 @@ class Comment extends ComunityEvent {
   final int postId;
   final String comment;
 
-  const Comment(
-      this.postId,
-      this.comment
-      );
+  const Comment(this.postId, this.comment);
   @override
   List<Object> get props => [postId, comment];
 }
+
 
 class SearchComunity extends ComunityEvent {
   final String searchQuery;
@@ -77,3 +66,4 @@ class SearchComunity extends ComunityEvent {
   @override
   List<Object> get props => [searchQuery];
 }
+

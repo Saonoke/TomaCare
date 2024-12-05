@@ -4,9 +4,12 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 // import 'package:tomacare/domain/entities/auth.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
+import 'package:tomacare/service/cloudinary.dart';
+import 'package:tomacare/service/save_auth.dart';
 
 class AuthService {
-  Future<String?> login(
+  final SaveAuth saveAuth = SaveAuth();
+  Future<Map<String, dynamic>> login(
       {required String emailOrUsername, required String password}) async {
     final url = Uri.parse('$baseurl/auth/token');
 
@@ -16,9 +19,9 @@ class AuthService {
             {'email_or_username': emailOrUsername, 'password': password}));
 
     if (response.statusCode == HttpStatus.ok) {
-      return jsonDecode(response.body)['access_token'];
+      return jsonDecode(response.body);
     } else {
-      throw Exception(jsonDecode(response.body)['detail']);
+      throw Exception(jsonDecode(response.body));
     }
   }
 
@@ -28,7 +31,6 @@ class AuthService {
       required String username,
       required String password}) async {
     final url = Uri.parse('$baseurl/auth');
-
     final response = await http.post(url,
         headers: headers,
         body: jsonEncode({
@@ -60,6 +62,19 @@ class AuthService {
       return jsonDecode(response.body)['access_token'];
     } else {
       throw Exception(jsonDecode(response.body)['detail']);
+
+  Future<String?> updateToken(
+      {required String refreshToken, required String token}) async {
+    final url = Uri.parse('$baseurl/auth/refresh');
+    headers.addAll({'Authorization': 'Bearer $token'});
+    final response = await http.post(url,
+        headers: headers, body: jsonEncode({'refresh_token': refreshToken}));
+    if (response.statusCode == 200) {
+      saveAuth.storeToken(jsonDecode(response.body));
+      return saveAuth.getToken();
+    } else {
+      throw Exception();
+
     }
   }
 }
