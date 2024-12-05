@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileEvent extends Equatable {
@@ -14,9 +15,32 @@ class UpdateProfile extends ProfileEvent {
   final String? username;
   final String? email;
   final String? profileImg;
+  final XFile? updatedProfileImage;
+
   const UpdateProfile(
-      {this.fullName, this.username, this.email, this.profileImg});
+      {this.fullName, this.username, this.email, this.profileImg, this.updatedProfileImage});
 
   @override
   List<Object?> get props => [fullName, username, email, profileImg];
+}
+
+class LoadPersonalMenu extends ProfileEvent {
+  
+}
+
+class ChangePassword extends ProfileEvent {
+  final String? oldPassword;
+  final String? newPassword;
+
+  const ChangePassword({this.oldPassword, this.newPassword});
+  @override
+  List<Object?> get props => [oldPassword, newPassword];
+}
+
+class CreatePassword extends ProfileEvent {
+  final String? password;
+
+  const CreatePassword({this.password});
+  @override
+  List<Object?> get props => [password];
 }

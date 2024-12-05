@@ -8,6 +8,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserService userService = UserService();
 
   ProfileBloc() : super(ProfileInitial()) {
+    on<LoadPersonalMenu>((event, emit) async {
+      emit(PersonalMenuLoading());
+      try {
+        final user = await userService.fetchUser();
+        emit(PersonalMenuLoaded(user));
+      } catch (e) {
+        emit(PersonalMenuError(e.toString()));
+      }
+    });
+
     on<LoadProfile>((event, emit) async {
       emit(ProfileLoading());
       try {
@@ -28,13 +38,32 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           email: event.email ?? currentState.user["email"],
           profileImg: event.profileImg ?? currentState.user["profileImg"],
         );
-        print(updatedUser);
         try {
-          await userService.updateUser(updatedUser);
+          await userService.updateUser(updatedUser, event.updatedProfileImage);
           add(LoadProfile());
         } catch (e) {
           emit(ProfileError(e.toString()));
         }
+      }
+    });
+
+    on<ChangePassword>((event, emit) async {
+      emit(PasswordLoading());
+      try {
+        final res = await userService.changePassword(event.newPassword, event.oldPassword);
+        emit(PasswordSuccess());
+      } catch (e) {
+        emit(PasswordError(e.toString()));
+      }
+    });
+
+    on<CreatePassword>((event, emit) async {
+      emit(PasswordLoading());
+      try {
+        await userService.createPassword(event.password);
+        emit(PasswordSuccess());
+      } catch (e) {
+        emit(PasswordError(e.toString()));
       }
     });
   }

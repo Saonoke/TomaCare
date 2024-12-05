@@ -18,8 +18,10 @@ import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
 
 import 'package:tomacare/presentation/plants/pages/plant.dart';
+import 'package:tomacare/presentation/user/page/menu_page.dart';
 import 'package:tomacare/presentation/user/page/profile_page.dart';
 import 'package:tomacare/presentation/weather/bloc/weather_bloc.dart';
+
 
 class HomePageView extends StatelessWidget {
   const HomePageView({super.key});
@@ -368,7 +370,8 @@ class _HomePageState extends State<HomePage> {
     const HomePageView(),
     const CommunityPage(),
     const PlantPage(),
-    const ProfilePage()
+    PersonalPage()
+
   ];
 
   @override

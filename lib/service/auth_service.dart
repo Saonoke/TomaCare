@@ -49,6 +49,20 @@ class AuthService {
     }
   }
 
+  Future<String?> googleLogin(
+      {required String googleAccessToken}) async {
+    final url = Uri.parse('$baseurl/auth/google');
+
+    final response = await http.post(url,
+        headers: headers,
+        body: jsonEncode(
+            {'google_access_token': googleAccessToken}));
+
+    if (response.statusCode == HttpStatus.ok) {
+      return jsonDecode(response.body)['access_token'];
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+
   Future<String?> updateToken(
       {required String refreshToken, required String token}) async {
     final url = Uri.parse('$baseurl/auth/refresh');
@@ -60,6 +74,7 @@ class AuthService {
       return saveAuth.getToken();
     } else {
       throw Exception();
+
     }
   }
 }

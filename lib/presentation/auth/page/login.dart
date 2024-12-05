@@ -325,40 +325,48 @@ footer(context) {
       const SizedBox(
         height: 11,
       ),
-      SizedBox(
-        height: 48,
-        width: 312,
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            backgroundColor: const WidgetStatePropertyAll(Colors.white),
-            elevation: const WidgetStatePropertyAll(2),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(1000),
-                side: BorderSide(color: Colors.grey.shade300),
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Image.network(
-              //   'https://s3-alpha-sig.figma.com/img/0e8c/5336/ec40b19b6983a179020e0e933a042d6b?Expires=1730073600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gFSHSh7xi2ah8QPOVIo6XTa15cwoCBDwohSjmPhSMmwCOUi2D2fCznUog1Ox3oSY2WxJ2ZTnbGHybkuPfLEbPet0kyMGd7Q40fd97pp~EMhcCGs8YWUdw54ZIsWYHfWTZoHLLOSzl8RtcIpQQop0WGrS-0sFPhZv1sF-lYkjwsZ67fdIVkTDBFc94YHCw-jL~ZIgW8w4fiJKbc9VSvFwiT8UclYjL~2-oMzTo2o6AyITmBCSHHH3H6UgoDbLgH~g-~Zw-KAaM-H37gYhZhK-IS~~i9GL1vEoje-1fxB3gYzpAM~bKJXK27vf8oASx61rxzc4aCYZj-TUL4cDOrRvcQ__',
-              //   width: 24,
-              //   height: 24,
-              // ),
-              const SizedBox(width: 8),
-              const Text(
-                'Sign in with Google',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
+      BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return SizedBox(
+            height: 48,
+            width: 312,
+            child: ElevatedButton(
+              onPressed: state is AuthLoading
+                  ? null // Nonaktifkan tombol saat sedang loading
+                  : () {
+                      context.read<AuthBloc>().add(SignInWithGoogle());
+                    },
+              style: ButtonStyle(
+                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                elevation: const WidgetStatePropertyAll(2),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(1000),
+                    side: BorderSide(color: Colors.grey.shade300),
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
+              child: state is AuthLoading
+                  ? const CircularProgressIndicator(
+                      color: Colors.black,
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          );
+        },
       )
     ],
   );
