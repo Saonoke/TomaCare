@@ -7,6 +7,7 @@ import 'package:tomacare/domain/entities/auth.dart';
 // import 'package:tomacare/domain/entities/auth.dart';
 import 'package:tomacare/service/auth_service.dart';
 import 'package:tomacare/service/save_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -61,5 +62,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         print('Error terjadi login: $e');
       }
     });
+
+    on<SignInWithGoogle>((event, emit) async {
+      emit(AuthLoading(isLoading: true));
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      String? response;
+      try {
+        final account = await googleSignIn.signIn();
+        if (account != null) {
+          final GoogleSignInAuthentication auth = await account.authentication;
+          final accessToken = auth.accessToken;
+          if (accessToken != null){
+            response = await authService.googleLogin(googleAccessToken: accessToken);
+          }
+
+          if (response != null) {
+            saveService.storeToken(response);
+            emit(AuthSucess(response));
+          } else {
+            emit(AuthFailed("gagal login"));
+          }
+        }
+      } catch (e) {
+        emit(AuthFailed("gagal login"));
+      }
+    },);
   }
 }

@@ -30,7 +30,7 @@ class User {
   late final String fullName;
   late final String username;
   late final String email;
-  final String profileImg;
+  late String profileImg;
 
   User(
       {required this.fullName,
@@ -43,7 +43,7 @@ class User {
     return User(
       fullName: json['full_name'],
       username: json['username'],
-      email: json['email'],
+      email: json['email'] ?? '',
       profileImg: json['profile_img'],
     );
   }
