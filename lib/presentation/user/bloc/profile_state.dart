@@ -21,3 +21,25 @@ class ProfileError extends ProfileState {
 
   const ProfileError(this.message);
 }
+
+final class PasswordLoading extends ProfileState {}
+
+final class PasswordSuccess extends ProfileState {}
+
+final class PasswordError extends ProfileState {
+  final String error;
+  const PasswordError(this.error);
+}
+
+final class PersonalMenuLoading extends ProfileState {}
+
+final class PersonalMenuError extends ProfileState {
+    final String error;
+  const PersonalMenuError(this.error);
+}
+
+final class PersonalMenuLoaded extends ProfileState {
+  final Map<String, dynamic> user;
+
+  const PersonalMenuLoaded(this.user);
+}

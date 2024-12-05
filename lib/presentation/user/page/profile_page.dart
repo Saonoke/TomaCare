@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomacare/domain/entities/user.dart';
+import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
 import 'package:tomacare/presentation/user/bloc/profile_event.dart';
 import 'package:tomacare/presentation/user/bloc/profile_state.dart';
@@ -13,6 +14,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xfff2f8f4),
+      ),
       backgroundColor: const Color(0xfff2f8f4),
       body: SafeArea(
         child: BlocProvider(
@@ -34,7 +38,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  File? _selectedImage;
+  XFile? _selectedImage;
 
   String? fullName;
   String? username;
@@ -63,7 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
 
             return SingleChildScrollView(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -76,15 +80,13 @@ class _ProfileViewState extends State<ProfileView> {
                           radius: 100,
                           backgroundColor: Colors.grey.shade300,
                           backgroundImage: _selectedImage != null
-                              ? FileImage(_selectedImage!)
+                              ? FileImage(File(_selectedImage!.path))
                               : (user.profileImg.isNotEmpty
-                                  ? NetworkImage(user.profileImg)
-                                  : null) as ImageProvider,
-                          child:
-                              _selectedImage == null && user.profileImg.isEmpty
-                                  ? Icon(Icons.person,
-                                      size: 50, color: Colors.grey.shade700)
-                                  : null,
+                              ? NetworkImage(user.profileImg)
+                              : null) as ImageProvider,
+                          child: _selectedImage == null && user.profileImg.isEmpty
+                              ? Icon(Icons.person, size: 50, color: Colors.grey.shade700)
+                              : null,
                         ),
                         Positioned(
                           bottom: 0,
@@ -92,10 +94,11 @@ class _ProfileViewState extends State<ProfileView> {
                           child: GestureDetector(
                             onTap: () async {
                               final pickedFile = await _picker.pickImage(
-                                  source: ImageSource.gallery);
+                                source: ImageSource.gallery,
+                              );
                               if (pickedFile != null) {
                                 setState(() {
-                                  _selectedImage = File(pickedFile.path);
+                                  _selectedImage = XFile(pickedFile.path);
                                 });
                               }
                             },
@@ -139,6 +142,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   email: email ?? user.email,
                                   profileImg:
                                       _selectedImage?.path ?? user.profileImg,
+                                  updatedProfileImage: _selectedImage
                                 ),
                               );
                         }
