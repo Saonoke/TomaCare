@@ -66,4 +66,3 @@ class SearchComunity extends ComunityEvent {
   @override
   List<Object> get props => [searchQuery];
 }
-

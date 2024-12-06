@@ -25,7 +25,16 @@ class UpdateProfile extends ProfileEvent {
 }
 
 class LoadPersonalMenu extends ProfileEvent {
-  
+
+}
+
+class MyComunityStarted extends ProfileEvent {
+  final int userId;
+
+  const MyComunityStarted(this.userId);
+
+  @override
+  List<Object> get props => [userId];
 }
 
 class ChangePassword extends ProfileEvent {

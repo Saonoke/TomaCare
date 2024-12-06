@@ -33,7 +33,8 @@ class ComunityService {
   }
 
   Future<List<Map<String, dynamic>>> getAll([String? query]) async {
-    final String queryString = query != null && query.isNotEmpty ? '?search=$query' : '';
+    final String queryString =
+        query != null && query.isNotEmpty ? '?search=$query' : '';
     final url = Uri.parse('$baseurl/post/$queryString');
 
     final String? token = await saveService.getToken();
@@ -72,7 +73,7 @@ class ComunityService {
     }
   }
 
-  Future<String?> getByUserId(int userId) async {
+  Future<List<Map<String, dynamic>>> getByUserId(int userId) async {
     final url = Uri.parse('$baseurl/post/user/$userId');
     final String? token = await saveService.getToken();
 
@@ -84,9 +85,10 @@ class ComunityService {
     );
 
     if (response.statusCode == HttpStatus.ok) {
-      return jsonDecode(response.body);
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData.map((item) => item as Map<String, dynamic>).toList();
     } else {
-      throw Exception(jsonDecode(response.body)['detail']);
+      throw Exception(jsonDecode(response.body)['detail'] ?? 'Unknown error');
     }
   }
 
@@ -99,14 +101,11 @@ class ComunityService {
       'authorization': 'Bearer $token'
     };
 
-    final response =
-        await http.post(
-            url,
-            headers: headers,
-            body: jsonEncode({"type": reactionType})
-        );
+    final response = await http.post(url,
+        headers: headers, body: jsonEncode({"type": reactionType}));
 
-    if ((response.statusCode == HttpStatus.ok) && (jsonDecode(response.body)['success'] == true)) {
+    if ((response.statusCode == HttpStatus.ok) &&
+        (jsonDecode(response.body)['success'] == true)) {
       return true;
     } else {
       throw Exception(jsonDecode(response.body)['detail']);
