@@ -57,6 +57,15 @@ class Comment extends ComunityEvent {
   List<Object> get props => [postId, comment];
 }
 
+class RemoveComment extends ComunityEvent {
+  final int postId;
+  final int commentId;
+
+  const RemoveComment(this.postId, this.commentId);
+  @override
+  List<Object> get props => [postId, commentId];
+}
+
 
 class SearchComunity extends ComunityEvent {
   final String searchQuery;

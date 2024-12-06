@@ -124,6 +124,7 @@ class _MyComunityPage extends State<MyComunityPage> {
                         title: post.title ?? '',
                         image: post.image,
                         profileImg: post.user.profileImg,
+                        commentLength: state.posts[index]['comments'].length,
                         isDisliked: post.disliked,
                         isLiked: post.liked,
                       );

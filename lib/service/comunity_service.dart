@@ -111,4 +111,44 @@ class ComunityService {
       throw Exception(jsonDecode(response.body)['detail']);
     }
   }
+
+  Future<Map<String, dynamic>> postComment(int postId, String comment) async {
+    final url = Uri.parse('$baseurl/post/$postId/comment');
+    final String? token = await saveService.getToken();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
+
+    final response = await http.post(url,
+        headers: headers, body: jsonEncode({"commentary": comment}));
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
+
+  Future<Map<String, dynamic>> removeComment(int postId, int commentId) async {
+    final url = Uri.parse('$baseurl/post/$postId/comment/$commentId');
+    final String? token = await saveService.getToken();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
+
+    final response = await http.delete(url,
+        headers: headers);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
 }

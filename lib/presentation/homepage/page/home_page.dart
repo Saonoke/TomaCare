@@ -69,6 +69,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
     final currentPosition = await Geolocator.getCurrentPosition();
+    if (!mounted) return;
     setState(() {
       position = currentPosition;
     });
