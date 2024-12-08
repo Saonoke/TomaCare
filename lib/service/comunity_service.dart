@@ -15,7 +15,10 @@ class ComunityService {
     final url = Uri.parse('$baseurl/post/');
     final String? token = await saveService.getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
     final response = await http.post(url,
         headers: headers,
@@ -57,7 +60,10 @@ class ComunityService {
     final url = Uri.parse('$baseurl/post/$id');
     final String? token = await saveService.getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
     final response = await http.get(
       url,
@@ -77,7 +83,10 @@ class ComunityService {
     final url = Uri.parse('$baseurl/post/user/$userId');
     final String? token = await saveService.getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
     final response = await http.get(
       url,
@@ -141,8 +150,25 @@ class ComunityService {
       'authorization': 'Bearer $token'
     };
 
-    final response = await http.delete(url,
-        headers: headers);
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
+
+  Future<Map<String, dynamic>> removePost(int postId) async {
+    final url = Uri.parse('$baseurl/post/$postId');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer ${await saveService.getToken()}'
+    };
+
+    final response = await http.delete(url, headers: headers);
 
     if (response.statusCode == HttpStatus.ok) {
       final Map<String, dynamic> jsonData = jsonDecode(response.body);

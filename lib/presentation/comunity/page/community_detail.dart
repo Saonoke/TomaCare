@@ -102,12 +102,21 @@ class _PostDetailViewState extends State<PostDetailView> {
     context.read<ComunityBloc>().add(RemoveComment(postId, commentId));
   }
 
+  void _deletePost(int postId) {
+    context.read<ComunityBloc>().add(DeletePost(postId));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ComunityBloc, ComunityState>(
       listener: (context, state) {},
       child: BlocBuilder<ComunityBloc, ComunityState>(
         builder: (context, state) {
+          if (state is DeletePostSuccess) {
+            Navigator.pop(
+                context,
+              );
+          }
           if (state is ComunityPostLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -164,6 +173,38 @@ class _PostDetailViewState extends State<PostDetailView> {
                                   ),
                                 ),
                               ),
+                              if (state.post['user']['id'] ==
+                                  widget.currentUserId)
+                                Positioned(
+                                  top: 10,
+                                  right:
+                                      10, // Position the button at the top-right corner
+                                  child: PopupMenuButton<String>(
+                                    icon: const Icon(
+                                      Icons.more_vert, // Ellipsis icon
+                                      color: Colors.white,
+                                    ),
+                                    color: Colors.white,
+                                    onSelected: (value) {
+                                      if (value == 'edit') {
+                                        // Handle edit functionality
+                                        print('Edit selected');
+                                      } else if (value == 'delete') {
+                                        _deletePost(state.post['id']);
+                                      }
+                                    },
+                                    itemBuilder: (BuildContext context) => [
+                                      const PopupMenuItem<String>(
+                                        value: 'edit',
+                                        child: Text('Edit'),
+                                      ),
+                                      const PopupMenuItem<String>(
+                                        value: 'delete',
+                                        child: Text('Delete'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -265,8 +306,9 @@ class _PostDetailViewState extends State<PostDetailView> {
                                           ? IconButton(
                                               icon: const Icon(Icons.delete,
                                                   color: Colors.red),
-                                              onPressed: () =>
-                                                  _deleteComment(state.post['id'], comment['id']),
+                                              onPressed: () => _deleteComment(
+                                                  state.post['id'],
+                                                  comment['id']),
                                             )
                                           : null,
                                     );

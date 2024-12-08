@@ -36,7 +36,8 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
     on<Comment>((event, emit) async {
       emit(ComunityPostLoading());
       try {
-        final post = await comunityService.postComment(event.postId, event.comment);
+        final post =
+            await comunityService.postComment(event.postId, event.comment);
 
         emit(ComunityPostLoaded(post));
       } catch (e) {
@@ -47,7 +48,8 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
     on<RemoveComment>((event, emit) async {
       emit(ComunityPostLoading());
       try {
-        final post = await comunityService.removeComment(event.postId, event.commentId);
+        final post =
+            await comunityService.removeComment(event.postId, event.commentId);
 
         emit(ComunityPostLoaded(post));
       } catch (e) {
@@ -106,6 +108,20 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
         emit(ComunityLoaded(posts));
       } catch (e) {
         emit(ComunityError(e.toString()));
+      }
+    });
+
+    on<DeletePost>((event, emit) async {
+      emit(ComunityPostLoading());
+      try {
+        final res = await comunityService.removePost(event.postId);
+        if (res['success']) {
+          emit(DeletePostSuccess());
+          return;
+        }
+        emit(ComunityPostFailed('Delete Failed!'));
+      } catch (e) {
+        emit(ComunityPostFailed(e.toString()));
       }
     });
   }

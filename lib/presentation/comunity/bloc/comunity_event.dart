@@ -40,6 +40,15 @@ class EditPost extends ComunityEvent {
   List<Object> get props => [title, body, imagePath];
 }
 
+class DeletePost extends ComunityEvent {
+  final int postId;
+
+  const DeletePost(this.postId);
+
+  @override
+  List<Object> get props => [postId];
+}
+
 class PostReaction extends ComunityEvent {
   final int postId;
   final String reactionType;

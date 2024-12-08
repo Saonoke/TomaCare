@@ -40,3 +40,5 @@ class ComunityError extends ComunityState {
 class ComunityReactionSuccess extends ComunityState {}
 
 class ComunityReactionFailed extends ComunityState {}
+
+class DeletePostSuccess extends ComunityState {}
