@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +14,17 @@ import 'package:tomacare/presentation/weather/pages/weather_pages.dart';
 // import 'package:tomacare/presentation/page/home_page.dart';
 import 'presentation/auth/page/login.dart';
 // import 'presentation/page/register.dart';
+import 'package:http/http.dart' as http;
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   CloudinaryContext.cloudinary =
       Cloudinary.fromCloudName(cloudName: 'dtzlizlrs');

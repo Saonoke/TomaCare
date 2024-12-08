@@ -40,6 +40,15 @@ class EditPost extends ComunityEvent {
   List<Object> get props => [title, body, imagePath];
 }
 
+class DeletePost extends ComunityEvent {
+  final int postId;
+
+  const DeletePost(this.postId);
+
+  @override
+  List<Object> get props => [postId];
+}
+
 class PostReaction extends ComunityEvent {
   final int postId;
   final String reactionType;
@@ -57,6 +66,15 @@ class Comment extends ComunityEvent {
   List<Object> get props => [postId, comment];
 }
 
+class RemoveComment extends ComunityEvent {
+  final int postId;
+  final int commentId;
+
+  const RemoveComment(this.postId, this.commentId);
+  @override
+  List<Object> get props => [postId, commentId];
+}
+
 
 class SearchComunity extends ComunityEvent {
   final String searchQuery;
@@ -66,4 +84,3 @@ class SearchComunity extends ComunityEvent {
   @override
   List<Object> get props => [searchQuery];
 }
-

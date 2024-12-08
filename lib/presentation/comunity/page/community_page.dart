@@ -45,7 +45,9 @@ class _CommunityPageState extends State<CommunityPageList> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        context.read<ComunityBloc>().add(SearchComunity(value.toString()));
+                        context
+                            .read<ComunityBloc>()
+                            .add(SearchComunity(value.toString()));
                       },
                       decoration: InputDecoration(
                         hintText: 'Cari di komunitas',
@@ -87,6 +89,7 @@ class _CommunityPageState extends State<CommunityPageList> {
                           title: post.title ?? '',
                           image: post.image,
                           profileImg: post.user.profileImg,
+                          commentLength: state.posts[index]['comments'].length,
                           isDisliked: post.disliked,
                           isLiked: post.liked,
                         );
@@ -124,6 +127,7 @@ class PostCard extends StatefulWidget {
   final String title;
   final String image;
   final String profileImg;
+  final int commentLength;
   bool isLiked = false;
   bool isDisliked = false;
 
@@ -134,6 +138,7 @@ class PostCard extends StatefulWidget {
     required this.title,
     required this.image,
     required this.profileImg,
+    required this.commentLength,
     required this.isLiked,
     required this.isDisliked,
     super.key,
@@ -168,8 +173,12 @@ class _PostCardState extends State<PostCard> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CommunityDetailPage()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PostDetailPage(
+                        postId: widget.postId,
+                      )));
         },
         child: Card(
           color: neutral06,
@@ -264,8 +273,8 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ],
                     ),
-                    const Text(
-                      '2 Jawaban',
+                    Text(
+                      '${widget.commentLength} Jawaban',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   ],

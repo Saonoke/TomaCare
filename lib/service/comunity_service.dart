@@ -15,7 +15,10 @@ class ComunityService {
     final url = Uri.parse('$baseurl/post/');
     final String? token = await saveService.getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
     final response = await http.post(url,
         headers: headers,
@@ -33,7 +36,8 @@ class ComunityService {
   }
 
   Future<List<Map<String, dynamic>>> getAll([String? query]) async {
-    final String queryString = query != null && query.isNotEmpty ? '?search=$query' : '';
+    final String queryString =
+        query != null && query.isNotEmpty ? '?search=$query' : '';
     final url = Uri.parse('$baseurl/post/$queryString');
 
     final String? token = await saveService.getToken();
@@ -56,7 +60,10 @@ class ComunityService {
     final url = Uri.parse('$baseurl/post/$id');
     final String? token = await saveService.getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
     final response = await http.get(
       url,
@@ -72,11 +79,14 @@ class ComunityService {
     }
   }
 
-  Future<String?> getByUserId(int userId) async {
+  Future<List<Map<String, dynamic>>> getByUserId(int userId) async {
     final url = Uri.parse('$baseurl/post/user/$userId');
     final String? token = await saveService.getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
     final response = await http.get(
       url,
@@ -84,9 +94,10 @@ class ComunityService {
     );
 
     if (response.statusCode == HttpStatus.ok) {
-      return jsonDecode(response.body);
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData.map((item) => item as Map<String, dynamic>).toList();
     } else {
-      throw Exception(jsonDecode(response.body)['detail']);
+      throw Exception(jsonDecode(response.body)['detail'] ?? 'Unknown error');
     }
   }
 
@@ -99,15 +110,69 @@ class ComunityService {
       'authorization': 'Bearer $token'
     };
 
-    final response =
-        await http.post(
-            url,
-            headers: headers,
-            body: jsonEncode({"type": reactionType})
-        );
+    final response = await http.post(url,
+        headers: headers, body: jsonEncode({"type": reactionType}));
 
-    if ((response.statusCode == HttpStatus.ok) && (jsonDecode(response.body)['success'] == true)) {
+    if ((response.statusCode == HttpStatus.ok) &&
+        (jsonDecode(response.body)['success'] == true)) {
       return true;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
+
+  Future<Map<String, dynamic>> postComment(int postId, String comment) async {
+    final url = Uri.parse('$baseurl/post/$postId/comment');
+    final String? token = await saveService.getToken();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
+
+    final response = await http.post(url,
+        headers: headers, body: jsonEncode({"commentary": comment}));
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
+
+  Future<Map<String, dynamic>> removeComment(int postId, int commentId) async {
+    final url = Uri.parse('$baseurl/post/$postId/comment/$commentId');
+    final String? token = await saveService.getToken();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
+
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
+
+  Future<Map<String, dynamic>> removePost(int postId) async {
+    final url = Uri.parse('$baseurl/post/$postId');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer ${await saveService.getToken()}'
+    };
+
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
     } else {
       throw Exception(jsonDecode(response.body)['detail']);
     }

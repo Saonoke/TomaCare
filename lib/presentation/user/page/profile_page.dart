@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomacare/domain/entities/user.dart';
-import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
 import 'package:tomacare/presentation/user/bloc/profile_event.dart';
 import 'package:tomacare/presentation/user/bloc/profile_state.dart';
@@ -80,10 +79,10 @@ class _ProfileViewState extends State<ProfileView> {
                           radius: 100,
                           backgroundColor: Colors.grey.shade300,
                           backgroundImage: _selectedImage != null
-                              ? FileImage(File(_selectedImage!.path))
+                              ? FileImage(File(_selectedImage!.path)) as ImageProvider
                               : (user.profileImg.isNotEmpty
                               ? NetworkImage(user.profileImg)
-                              : null) as ImageProvider,
+                              : null),
                           child: _selectedImage == null && user.profileImg.isEmpty
                               ? Icon(Icons.person, size: 50, color: Colors.grey.shade700)
                               : null,
