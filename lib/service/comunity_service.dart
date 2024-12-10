@@ -177,4 +177,29 @@ class ComunityService {
       throw Exception(jsonDecode(response.body)['detail']);
     }
   }
+
+  Future<Map<String, dynamic>> editPost(int postId, String title, String body) async {
+    final url = Uri.parse('$baseurl/post/$postId');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer ${await saveService.getToken()}'
+    };
+
+    final response = await http.put(
+        url,
+        headers: headers,
+        body: jsonEncode({
+          'title': title,
+          'body': body
+        })
+    );
+
+    if (response.statusCode == HttpStatus.created) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData;
+    } else {
+      throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
 }

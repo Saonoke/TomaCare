@@ -42,3 +42,19 @@ class ComunityReactionSuccess extends ComunityState {}
 class ComunityReactionFailed extends ComunityState {}
 
 class DeletePostSuccess extends ComunityState {}
+
+class EditPostLoading extends ComunityState {}
+
+class EditPostLoaded extends ComunityState {
+  final Map<String, dynamic> post;
+
+  const EditPostLoaded(this.post);
+}
+
+class EditPostSuccess extends ComunityState {}
+
+class EditPostFailed extends ComunityState {
+  final String message;
+
+  const EditPostFailed(this.message);
+}

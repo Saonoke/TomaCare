@@ -85,7 +85,7 @@ class _CommunityPageState extends State<CommunityPageList> {
                         return PostCard(
                           postId: post.id ?? -1,
                           username: post.user.fullName,
-                          date: '1 hari',
+                          date: post.createdAt,
                           title: post.title ?? '',
                           image: post.image,
                           profileImg: post.user.profileImg,

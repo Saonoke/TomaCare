@@ -124,5 +124,27 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
         emit(ComunityPostFailed(e.toString()));
       }
     });
+
+    on<EditPost>((event, emit) async {
+      emit(EditPostLoading());
+      try {
+        final post = await comunityService.getById(event.postId);
+
+        emit(EditPostLoaded(post));
+      } catch (e) {
+        emit(EditPostFailed(e.toString()));
+      }
+    });
+
+    on<EditPostAction>((event, emit) async {
+      emit(EditPostLoading());
+      try {
+        await comunityService.editPost(event.postId, event.title, event.body);
+
+        emit(EditPostSuccess());
+      } catch (e) {
+        emit(EditPostFailed(e.toString()));
+      }
+    });
   }
 }

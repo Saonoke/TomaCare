@@ -13,6 +13,7 @@ class Post {
   final bool disliked;
   final User user;
   final String image;
+  final String createdAt;
 
   Post({
     this.id,
@@ -24,6 +25,7 @@ class Post {
     this.countDislike = 0,
     this.liked = false,
     this.disliked = false,
+    required this.createdAt,
     required this.user,
     required this.image
   });
@@ -41,6 +43,7 @@ class Post {
       countDislike: json['countDislike'] as int? ?? 0,
       liked: json['liked'] as bool? ?? false,
       disliked: json['disliked'] as bool? ?? false,
+      createdAt: json['created_at'] as String,
       user: User.fromJson(json['user'] as Map<String, dynamic>),
     );
   }
@@ -58,6 +61,7 @@ class Post {
       'countDislike': countDislike,
       'liked': liked,
       'disliked': disliked,
+      'created_at': createdAt,
       'user': user.toJson(),
     };
   }
