@@ -9,9 +9,7 @@ import 'package:tomacare/presentation/auth/page/register.dart';
 import 'package:tomacare/presentation/homepage/page/home_page.dart';
 import 'package:tomacare/presentation/splashscreen.dart';
 import 'package:tomacare/presentation/weather/pages/weather_pages.dart';
-// import 'package:tomacare/presentation/page/home_page.dart';
 import 'presentation/auth/page/login.dart';
-// import 'presentation/page/register.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
