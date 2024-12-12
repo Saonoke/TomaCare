@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
+import 'package:tomacare/presentation/comunity/page/comunity_edit.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
 import 'package:tomacare/presentation/user/bloc/profile_event.dart';
@@ -115,8 +116,8 @@ class _PostDetailViewState extends State<PostDetailView> {
         builder: (context, state) {
           if (state is DeletePostSuccess) {
             Navigator.pop(
-                context,
-              );
+              context,
+            );
           }
           if (state is ComunityPostLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -188,8 +189,19 @@ class _PostDetailViewState extends State<PostDetailView> {
                                     color: Colors.white,
                                     onSelected: (value) {
                                       if (value == 'edit') {
-                                        // Handle edit functionality
-                                        print('Edit selected');
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditCommunitypage(
+                                                      postId: state.post['id'],
+                                                    ))).then(
+                                          (value) {
+                                            context
+                                                .read<ComunityBloc>()
+                                                .add(OpenPost(state.post['id']));
+                                          },
+                                        );
                                       } else if (value == 'delete') {
                                         _deletePost(state.post['id']);
                                       }
@@ -285,33 +297,77 @@ class _PostDetailViewState extends State<PostDetailView> {
                                     final bool isCurrentUser = comment['user']
                                             ['id'] ==
                                         widget.currentUserId;
-                                    return ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            comment['user']['profile_img']),
-                                      ),
-                                      title: Text(comment['user']['username']),
-                                      subtitle: Column(
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(comment['commentary']),
-                                          Text(
-                                            comment['timestamp'],
-                                            style: TextStyle(
-                                                color: Colors.grey[600]),
+                                          // Foto profil
+                                          CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                comment['user']['profile_img']),
                                           ),
+                                          const SizedBox(width: 10),
+                                          // Teks komentar
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  comment['user']['username'],
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                    height:
+                                                        4), // Spasi kecil antara username dan komentar
+                                                Text(comment['commentary']),
+                                                const SizedBox(
+                                                    height:
+                                                        4), // Spasi kecil antara komentar dan timestamp
+                                                Text(
+                                                  comment['timestamp'],
+                                                  style: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          // Tombol tindakan (opsional)
+                                          if (isCurrentUser)
+                                            PopupMenuButton<String>(
+                                              icon: const Icon(
+                                                Icons
+                                                    .more_vert, // Ikon ellipsis
+                                                color: Colors
+                                                    .black, // Sesuaikan warna dengan tema UI
+                                              ),
+                                              onSelected: (value) {
+                                                if (value == 'delete') {
+                                                  _deleteComment(
+                                                      state.post['id'],
+                                                      comment['id']);
+                                                }
+                                              },
+                                              itemBuilder:
+                                                  (BuildContext context) => [
+                                                PopupMenuItem<String>(
+                                                  value: 'delete',
+                                                  child: Row(
+                                                    children: [
+                                                      const Text('Delete'),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                         ],
                                       ),
-                                      trailing: isCurrentUser
-                                          ? IconButton(
-                                              icon: const Icon(Icons.delete,
-                                                  color: Colors.red),
-                                              onPressed: () => _deleteComment(
-                                                  state.post['id'],
-                                                  comment['id']),
-                                            )
-                                          : null,
                                     );
                                   }).toList(),
                                   if (!showAllComments &&

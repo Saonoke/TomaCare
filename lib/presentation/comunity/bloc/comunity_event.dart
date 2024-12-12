@@ -30,14 +30,23 @@ class CreatePost extends ComunityEvent {
 }
 
 class EditPost extends ComunityEvent {
-  final String title;
-  final String body;
-  final String imagePath;
+  final int postId;
 
-  const EditPost(this.title, this.body, this.imagePath);
+  const EditPost(this.postId);
 
   @override
-  List<Object> get props => [title, body, imagePath];
+  List<Object> get props => [postId];
+}
+
+class EditPostAction extends ComunityEvent {
+  final int postId;
+  final String title;
+  final String body;
+
+  const EditPostAction(this.postId, this.title, this.body);
+
+  @override
+  List<Object> get props => [postId, title, body];
 }
 
 class DeletePost extends ComunityEvent {
@@ -74,7 +83,6 @@ class RemoveComment extends ComunityEvent {
   @override
   List<Object> get props => [postId, commentId];
 }
-
 
 class SearchComunity extends ComunityEvent {
   final String searchQuery;
