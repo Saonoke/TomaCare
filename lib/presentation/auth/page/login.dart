@@ -137,8 +137,9 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     print('start auth');
                     if (_formKey.currentState!.validate()) {
-                      context.read<AuthBloc>().add(LoginRequest(
-                          emailController.text, passwordController.text));
+                      context.read<AuthBloc>()
+                        ..add(LoginRequest(
+                            emailController.text, passwordController.text));
                     }
                   },
                   style: const ButtonStyle(

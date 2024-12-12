@@ -108,6 +108,7 @@ class _PostDetailViewState extends State<PostDetailView> {
 
   @override
   Widget build(BuildContext context) {
+]
     return BlocListener<ComunityBloc, ComunityState>(
       listener: (context, state) {},
       child: BlocBuilder<ComunityBloc, ComunityState>(
@@ -370,6 +371,7 @@ class _PostDetailViewState extends State<PostDetailView> {
           return const Center(child: Text('No data available.'));
         },
       ),
+
     );
   }
 }

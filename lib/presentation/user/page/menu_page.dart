@@ -24,9 +24,9 @@ class _PersonalPageState extends State<PersonalPage> {
     return BlocProvider(
       create: (context) => ProfileBloc()..add(LoadPersonalMenu()),
       child: Scaffold(
-        backgroundColor: const Color(0xfff2f8f4),
+        backgroundColor: neutral06,
         appBar: AppBar(
-          backgroundColor: const Color(0xfff2f8f4),
+          backgroundColor: neutral06,
           title: Text('Personal Settings'),
           automaticallyImplyLeading: false,
         ),
@@ -170,9 +170,7 @@ class UserProfileWidget extends StatelessWidget {
           CircleAvatar(
             radius: 30,
             backgroundColor: Colors.grey.shade300,
-            backgroundImage: imageUrl != null
-                ? NetworkImage(imageUrl!)
-                : null,
+            backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : null,
             child: imageUrl == null
                 ? Icon(Icons.person, size: 50, color: Colors.grey.shade700)
                 : null,

@@ -16,12 +16,14 @@ final class WeatherSuccess extends WeatherState {
   final int weather_code;
   final double temperature;
   final double windspeed;
+  final WeatherCondition weatherCondition;
 
   const WeatherSuccess(
       {required this.placemarks,
       required this.weather_code,
       required this.temperature,
-      required this.windspeed});
+      required this.windspeed,
+      required this.weatherCondition});
 
   @override
   List<Object> get props => [placemarks, weather_code];

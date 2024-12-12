@@ -57,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<LoginRequest>((event, emit) async {
+      print('starttt');
       emit(AuthLoading(isLoading: true));
       try {
         final Map<String, dynamic> response = await authService.login(
@@ -64,6 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         saveService.storeToken(response);
         emit(AuthSucess(response['access_token']));
       } catch (e) {
+        print(e);
         emit(AuthFailed("gagal login"));
       }
     });

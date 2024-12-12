@@ -37,12 +37,14 @@ class AuthService {
           'username': username,
           'password': password
         }));
+    print(response);
 
     if (response.statusCode == HttpStatus.created) {
       Map<String, dynamic> data = jsonDecode(response.body);
       data['password'] = password;
       return data;
     } else {
+      print('error');
       throw Exception(jsonDecode(response.body)['detail']);
     }
   }
@@ -73,6 +75,8 @@ class AuthService {
       return saveAuth.getToken();
     } else {
       throw Exception();
+
+
     }
   }
 
@@ -86,6 +90,7 @@ class AuthService {
       return data;
     } else {
       throw Exception(jsonDecode(response.body)['detail']);
+
     }
   }
 }

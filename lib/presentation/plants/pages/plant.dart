@@ -4,7 +4,7 @@ import 'package:tomacare/domain/entities/plant.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
-import 'package:tomacare/presentation/plants/pages/detailPlant.dart';
+import 'package:tomacare/presentation/plants/pages/detaill_plant.dart';
 
 class PlantPage extends StatelessWidget {
   const PlantPage({super.key});

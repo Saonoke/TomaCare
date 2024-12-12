@@ -129,12 +129,11 @@ class _AddplantState extends State<Addplant> {
                     onPressed: () async {
                       final Map<String, dynamic> imagesUploaded =
                           await Cloudinary().upload(widget.image!);
-                      context.read<PlantsBloc>()
-                        ..add(PlantsCreate(
-                            plant: Plant(
-                                title: nameController.text,
-                                condition: widget.predicted,
-                                image_path: imagesUploaded['url'])));
+                      context.read<PlantsBloc>().add(PlantsCreate(
+                          plant: Plant(
+                              title: nameController.text,
+                              condition: widget.predicted,
+                              image_path: imagesUploaded['url'])));
                     },
                     style: ButtonStyle(
                         backgroundColor:
