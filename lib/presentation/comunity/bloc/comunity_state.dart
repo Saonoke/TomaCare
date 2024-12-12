@@ -17,6 +17,14 @@ class ComunityLoaded extends ComunityState {
   const ComunityLoaded(this.posts);
 }
 
+class ComunityPostLoading extends ComunityState {}
+
+class ComunityPostFailed extends ComunityState {
+  final String error;
+
+  const ComunityPostFailed(this.error);
+}
+
 class ComunityPostLoaded extends ComunityState {
   final Map<String, dynamic> post;
 
@@ -32,3 +40,5 @@ class ComunityError extends ComunityState {
 class ComunityReactionSuccess extends ComunityState {}
 
 class ComunityReactionFailed extends ComunityState {}
+
+class DeletePostSuccess extends ComunityState {}

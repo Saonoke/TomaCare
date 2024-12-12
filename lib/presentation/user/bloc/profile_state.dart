@@ -43,3 +43,16 @@ final class PersonalMenuLoaded extends ProfileState {
 
   const PersonalMenuLoaded(this.user);
 }
+
+final class MyComunityLoading extends ProfileState {}
+
+final class MyComunityLoaded extends ProfileState {
+  final List<Map<String, dynamic>> posts;
+
+  const MyComunityLoaded(this.posts);
+}
+
+final class MyComunityError extends ProfileState {
+  final String error;
+  const MyComunityError(this.error);
+}

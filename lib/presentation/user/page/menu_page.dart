@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/user/bloc/profile_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:tomacare/presentation/user/bloc/profile_event.dart';
 import 'package:tomacare/presentation/user/bloc/profile_state.dart';
 import 'package:tomacare/presentation/user/page/change_password.dart';
 import 'package:tomacare/presentation/user/page/create_password.dart';
+import 'package:tomacare/presentation/user/page/my_comunity_page.dart';
 import 'package:tomacare/presentation/user/page/profile_page.dart';
 
 class PersonalPage extends StatefulWidget {
@@ -43,7 +45,24 @@ class _PersonalPageState extends State<PersonalPage> {
                     email: state.user['email'],
                     imageUrl: state.user['profile_img'],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
+                  ListTile(
+                    leading: Icon(
+                        Icons.message,
+                        color: neutral02),
+                    title: Text(
+                      'My Posts',
+                      style: TextStyle(color: neutral01),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyComunity()),
+                      );
+                    },
+                  ),
+                  Divider(),
                   ListTile(
                     leading: Icon(Icons.person, color: neutral02),
                     title: Text(
@@ -91,7 +110,29 @@ class _PersonalPageState extends State<PersonalPage> {
                                   builder: (context) => CreatePasswordPage()),
                             );
                           },
-                        )
+                        ),
+                  Divider(),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(Logout());
+                  },
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.red),
+                    fixedSize: WidgetStatePropertyAll(Size(312, 48)),
+                  ),
+                  child: state is AuthLoading
+                      ? CircularProgressIndicator()
+                      : const Text(
+                          'Logout',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Poppins',
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              height: 22 / 17,
+                              letterSpacing: -0.408),
+                        ))
                 ],
               );
             }
@@ -145,7 +186,7 @@ class UserProfileWidget extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: neutral02,
+                    color: neutral01,
                   ),
                 ),
                 const SizedBox(height: 4),

@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:tomacare/domain/entities/auth.dart';
-// import 'package:tomacare/domain/entities/auth.dart';
 import 'package:tomacare/service/auth_service.dart';
 import 'package:tomacare/service/save_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,25 +17,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final String? token = await saveService.getToken();
 
         if (token == null) {
-          print('null');
           emit(AuthFailed('perlu login'));
         } else {
           emit(AuthSucess(token));
         }
       } catch (e) {
-        print(e.toString());
         emit(AuthFailed(e.toString()));
       }
     });
 
     on<Logout>((event, emit) async {
-      saveService.deleteToken();
-      emit(AuthFailed('logout'));
+      emit(AuthLoading(isLoading: true));
+      try {
+        final String? token = await saveService.getToken();
+
+        final res = await authService.logout(token!);
+        if (res['success']) {
+          saveService.deleteToken();
+          emit(AuthFailed('logout'));
+        }
+        emit(AuthFailed("Gagal Logout!"));
+      } catch (e) {
+        emit(AuthFailed(e.toString()));
+      }
     });
 
     on<Register>((event, emit) async {
-      print('start register');
-
       try {
         final Map<String, dynamic> response = await authService.register(
             email: event.email,

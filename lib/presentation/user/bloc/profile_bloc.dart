@@ -1,11 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomacare/domain/entities/user.dart';
+import 'package:tomacare/service/comunity_service.dart';
 import 'package:tomacare/service/user_service.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserService userService = UserService();
+  final ComunityService comunityService = ComunityService();
 
   ProfileBloc() : super(ProfileInitial()) {
     on<LoadPersonalMenu>((event, emit) async {
@@ -50,7 +52,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ChangePassword>((event, emit) async {
       emit(PasswordLoading());
       try {
-        final res = await userService.changePassword(event.newPassword, event.oldPassword);
+        await userService.changePassword(event.newPassword, event.oldPassword);
         emit(PasswordSuccess());
       } catch (e) {
         emit(PasswordError(e.toString()));
@@ -64,6 +66,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(PasswordSuccess());
       } catch (e) {
         emit(PasswordError(e.toString()));
+      }
+    });
+
+    on<MyComunityStarted>((event, emit) async {
+      emit(MyComunityLoading());
+      try {
+        final posts = await comunityService.getByUserId(event.userId);
+        emit(MyComunityLoaded(posts));
+      } catch (e) {
+        emit(MyComunityError(e.toString()));
       }
     });
   }
