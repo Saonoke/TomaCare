@@ -54,6 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<LoginRequest>((event, emit) async {
+      print('starttt');
       emit(AuthLoading(isLoading: true));
       try {
         final Map<String, dynamic> response = await authService.login(
@@ -61,33 +62,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         saveService.storeToken(response);
         emit(AuthSucess(response['access_token']));
       } catch (e) {
+        print(e);
         emit(AuthFailed("gagal login"));
       }
     });
 
-    on<SignInWithGoogle>((event, emit) async {
-      emit(AuthLoading(isLoading: true));
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      String? response;
-      try {
-        final account = await googleSignIn.signIn();
-        if (account != null) {
-          final GoogleSignInAuthentication auth = await account.authentication;
-          final accessToken = auth.accessToken;
-          if (accessToken != null){
-            response = await authService.googleLogin(googleAccessToken: accessToken);
-          }
+    on<SignInWithGoogle>(
+      (event, emit) async {
+        emit(AuthLoading(isLoading: true));
+        final GoogleSignIn googleSignIn = GoogleSignIn();
 
-          if (response != null) {
-            saveService.storeToken(response);
-            emit(AuthSucess(response));
-          } else {
-            emit(AuthFailed("gagal login"));
+        try {
+          final account = await googleSignIn.signIn();
+          if (account != null) {
+            final GoogleSignInAuthentication auth =
+                await account.authentication;
+            final accessToken = auth.accessToken;
+            if (accessToken != null) {
+              final response =
+                  await authService.googleLogin(googleAccessToken: accessToken);
+              saveService.storeToken(response);
+              emit(AuthSucess(response['access_token']));
+            } else {
+              emit(AuthFailed("gagal login"));
+            }
           }
+        } catch (e) {
+          emit(AuthFailed("gagal login"));
         }
-      } catch (e) {
-        emit(AuthFailed("gagal login"));
-      }
-    },);
+      },
+    );
   }
 }

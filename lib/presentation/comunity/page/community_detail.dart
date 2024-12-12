@@ -29,6 +29,7 @@ class CommunityDetailScreen extends StatelessWidget {
                 return CircularProgressIndicator();
               case ComunityPostLoaded():
                 final post = state.post;
+
                 final comments = post['comments'];
                 final user = post['user'];
 

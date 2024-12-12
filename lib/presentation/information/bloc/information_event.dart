@@ -6,3 +6,11 @@ sealed class InformationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+final class getInformation extends InformationEvent {}
+
+final class getInformationId extends InformationEvent {
+  final int id;
+
+  const getInformationId({required this.id});
+}

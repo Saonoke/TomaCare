@@ -39,29 +39,32 @@ class AuthService {
           'username': username,
           'password': password
         }));
+    print(response);
 
     if (response.statusCode == HttpStatus.created) {
       Map<String, dynamic> data = jsonDecode(response.body);
       data['password'] = password;
       return data;
     } else {
+      print('error');
       throw Exception(jsonDecode(response.body)['detail']);
     }
   }
 
-  Future<String?> googleLogin(
+  Future<Map<String, dynamic>> googleLogin(
       {required String googleAccessToken}) async {
     final url = Uri.parse('$baseurl/auth/google');
 
     final response = await http.post(url,
         headers: headers,
-        body: jsonEncode(
-            {'google_access_token': googleAccessToken}));
+        body: jsonEncode({'google_access_token': googleAccessToken}));
 
     if (response.statusCode == HttpStatus.ok) {
-      return jsonDecode(response.body)['access_token'];
+      return jsonDecode(response.body);
     } else {
       throw Exception(jsonDecode(response.body)['detail']);
+    }
+  }
 
   Future<String?> updateToken(
       {required String refreshToken, required String token}) async {
@@ -74,7 +77,6 @@ class AuthService {
       return saveAuth.getToken();
     } else {
       throw Exception();
-
     }
   }
 }
