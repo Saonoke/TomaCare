@@ -26,3 +26,5 @@ class PlantRequestById extends PlantsEvent {
   @override
   List<Object> get props => [id];
 }
+
+class PlantsDone extends PlantsEvent {}

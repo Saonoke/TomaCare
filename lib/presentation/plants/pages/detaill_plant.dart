@@ -263,8 +263,6 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
                                                     barrierDismissible: false,
                                                     builder: (Dialogcontext) {
                                                       return AlertDialog(
-                                                        title:
-                                                            const Text('Tes'),
                                                         content: const Text(
                                                             'Sudah Selesai ?'),
                                                         actions: [
@@ -320,11 +318,32 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
                                         );
                                       },
                                     ),
-                                  )
+                                  ),
                           ],
                         ),
                       ),
                     ),
+                    if (indexTask == 6)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primaryColor,
+                              minimumSize: Size(double.infinity, 50),
+                            ),
+                            child: const Text(
+                              'Selesai',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  height: 22 / 17,
+                                  letterSpacing: -0.408),
+                            )),
+                      ),
+                    Padding(padding: const EdgeInsets.only(bottom: 16))
                   ],
                 );
               default:
