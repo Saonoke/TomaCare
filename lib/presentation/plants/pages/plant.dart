@@ -241,6 +241,10 @@ class _PlantListState extends State<PlantList> {
                         return Center(
                           child: Text('error message'),
                         );
+                      default:
+                        return Center(
+                          child: Text('Error'),
+                        );
                     }
                   }, listener: (context, state) {
                     if (state is PlantsSuccess) {

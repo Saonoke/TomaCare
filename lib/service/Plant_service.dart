@@ -95,14 +95,29 @@ class PlantService {
     };
 
     final response = await http.put(url,
-        headers: headers, body: jsonEncode({
-          "title": plant.title
-        }));
+        headers: headers, body: jsonEncode({"title": plant.title}));
 
     if (response.statusCode == HttpStatus.ok) {
       return Plant.fromJson(jsonDecode(response.body));
     } else {
       print(jsonDecode(response.body));
+      throw Exception();
+    }
+  }
+
+  Future<Map<String, dynamic>> deletePlant({required int id}) async {
+    final url = Uri.parse('$baseurl/plants/$id');
+    final token = await SaveAuth().getToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
+
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == HttpStatus.ok) {
+      return jsonDecode(response.body);
+    } else {
       throw Exception();
     }
   }
