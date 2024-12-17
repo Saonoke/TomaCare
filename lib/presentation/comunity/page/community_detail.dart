@@ -178,9 +178,9 @@ class _PostDetailViewState extends State<PostDetailView> {
                                   widget.currentUserId)
                                 Positioned(
                                   top: 10,
-                                  right:
-                                      10, // Position the button at the top-right corner
+                                  right: 10,
                                   child: PopupMenuButton<String>(
+                                    menuPadding: EdgeInsets.zero,
                                     icon: const Icon(
                                       Icons.more_vert, // Ellipsis icon
                                       color: Colors.white,
@@ -320,13 +320,9 @@ class _PostDetailViewState extends State<PostDetailView> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                const SizedBox(
-                                                    height:
-                                                        4), // Spasi kecil antara username dan komentar
+                                                const SizedBox(height: 2),
                                                 Text(comment['commentary']),
-                                                const SizedBox(
-                                                    height:
-                                                        4), // Spasi kecil antara komentar dan timestamp
+                                                const SizedBox(height: 1),
                                                 Text(
                                                   comment['timestamp'],
                                                   style: TextStyle(
@@ -339,6 +335,7 @@ class _PostDetailViewState extends State<PostDetailView> {
                                           // Tombol tindakan (opsional)
                                           if (isCurrentUser)
                                             PopupMenuButton<String>(
+                                              menuPadding: EdgeInsets.zero,
                                               icon: const Icon(
                                                 Icons
                                                     .more_vert, // Ikon ellipsis

@@ -21,11 +21,14 @@ class CommunityPage extends StatelessWidget {
 
 class CommunityPageList extends StatefulWidget {
   const CommunityPageList({super.key});
+
   @override
   State<CommunityPageList> createState() => _CommunityPageState();
 }
 
 class _CommunityPageState extends State<CommunityPageList> {
+  List<dynamic> posts = []; // State untuk menyimpan posts secara lokal
+
   @override
   void initState() {
     context.read<ComunityBloc>().add(ComunityStarted());
@@ -66,65 +69,63 @@ class _CommunityPageState extends State<CommunityPageList> {
               ),
             ),
             Expanded(
-              child: BlocBuilder<ComunityBloc, ComunityState>(
-                builder: (context, state) {
-                  if (state is ComunityLoading) {
-                    return Skeletonizer(
-                      enabled: true,
-                      enableSwitchAnimation: true,
-                      child: Card(
-                        child: ListTile(
-                          title: Text('Item number as title'),
-                          subtitle: const Text('Subtitle here'),
-                          trailing: const Icon(
-                            Icons.ac_unit,
-                            size: 32,
+
+              child: BlocListener<ComunityBloc, ComunityState>(
+                listener: (context, state) {
+                  if (state is ComunityLoaded) {
+                    setState(() {
+                      posts = state.posts;
+                    });
+                  }
+                },
+                child: BlocBuilder<ComunityBloc, ComunityState>(
+                  builder: (context, state) {
+                    if (state is ComunityLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is ComunityLoaded) {
+                      if (posts.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'No posts found',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                        ),
-                      ),
-                    );
-                  } else if (state is ComunityLoaded) {
-                    if (state.posts.isEmpty) {
-                      return const Center(
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: posts.length,
+                        itemBuilder: (context, index) {
+                          final post = Post.fromJson(posts[index]);
+                          return PostCard(
+                            postId: post.id ?? -1,
+                            username: post.user.fullName,
+                            date: post.createdAt,
+                            title: post.title ?? '',
+                            image: post.image,
+                            profileImg: post.user.profileImg,
+                            commentLength: posts[index]['comments'].length,
+                            isDisliked: post.disliked,
+                            isLiked: post.liked,
+                          );
+                        },
+                      );
+                    } else if (state is ComunityError) {
+                      if (state.message == 'Exception: Token has expired.') {
+                        context.read<AuthBloc>().add(Logout());
+                      }
+                      return Center(
+
                         child: Text(
-                          'No posts found',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          state.message,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.red,
+                          ),
                         ),
                       );
                     }
-                    return ListView.builder(
-                      itemCount: state.posts.length,
-                      itemBuilder: (context, index) {
-                        final post = Post.fromJson(state.posts[index]);
-                        return PostCard(
-                          postId: post.id ?? -1,
-                          username: post.user.fullName,
-                          date: post.createdAt,
-                          title: post.title ?? '',
-                          image: post.image,
-                          profileImg: post.user.profileImg,
-                          commentLength: state.posts[index]['comments'].length,
-                          isDisliked: post.disliked,
-                          isLiked: post.liked,
-                        );
-                      },
-                    );
-                  } else if (state is ComunityError) {
-                    if (state.message == 'Exception: Token has expired.') {
-                      context.read<AuthBloc>().add(Logout());
-                    }
-                    return Center(
-                      child: Text(
-                        state.message,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.red,
-                        ),
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink(); // Default empty state
-                },
+                    return const SizedBox.shrink(); // Default empty state
+                  },
+                ),
               ),
             ),
           ],
@@ -133,6 +134,7 @@ class _CommunityPageState extends State<CommunityPageList> {
     );
   }
 }
+
 
 class PostCard extends StatefulWidget {
   final int postId;
@@ -192,7 +194,9 @@ class _PostCardState extends State<PostCard> {
               MaterialPageRoute(
                   builder: (context) => PostDetailPage(
                         postId: widget.postId,
-                      )));
+                      ))).then((value) {
+            context.read<ComunityBloc>().add(ComunityStarted());
+                      },);
         },
         child: Card(
           color: neutral06,
