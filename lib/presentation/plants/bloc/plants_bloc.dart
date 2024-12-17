@@ -72,5 +72,16 @@ class PlantsBloc extends Bloc<PlantsEvent, PlantsState> {
         emit(PlantsFailed(message: 'Gagal merubah tanaman. Coba lagi...'));
       }
     });
+
+    on<PlantDelete>((event, emit) async {
+      emit(PlantsLoading());
+      try {
+        await plantService.deletePlant(id: event.id);
+
+        emit(PlantDeleteSuccess());
+      } catch (e) {
+        emit(PlantsFailed(message: 'Gagal merubah tanaman. Coba lagi...'));
+      }
+    });
   }
 }

@@ -303,6 +303,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         return Center(
                           child: Text('error message'),
                         );
+                      default:
+                        return Center(
+                          child: Text('Error'),
+                        );
                     }
                   }),
               Padding(
@@ -553,7 +557,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           MaterialPageRoute(
                               builder: (context) => DetailPlantPage(
                                     index: plant.id!,
-                                  )));
+                                  ))).then(
+                        (value) {
+                          context.read<PlantsBloc>().add(PlantsRequest());
+                        },
+                      );
                     },
                     child: SizedBox(
                       width: 175,

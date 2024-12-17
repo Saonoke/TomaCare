@@ -46,3 +46,5 @@ final class PlantsMessage extends PlantsState {
   @override
   List<Object> get props => [message];
 }
+
+final class PlantDeleteSuccess extends PlantsState {}
