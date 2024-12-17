@@ -26,3 +26,13 @@ class PlantRequestById extends PlantsEvent {
   @override
   List<Object> get props => [id];
 }
+
+class PlantEdit extends PlantsEvent {
+  final int id;
+  final String title;
+
+  const PlantEdit({required this.id, required this.title});
+
+  @override
+  List<Object> get props => [id, title];
+}

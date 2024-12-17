@@ -9,6 +9,7 @@ import 'package:tomacare/domain/entities/plant.dart';
 import 'package:tomacare/domain/entities/task.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
+import 'package:tomacare/presentation/plants/pages/edit_plant.dart';
 import 'package:tomacare/tasks/bloc/tasks_bloc.dart';
 
 class DetailPlantPage extends StatelessWidget {
@@ -107,6 +108,44 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
                               },
                               icon: Icon(Iconsax.arrow_left),
                               color: neutral06,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: PopupMenuButton<String>(
+                              menuPadding: EdgeInsets.zero,
+                              icon: const Icon(
+                                Icons.more_vert, // Ellipsis icon
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                              onSelected: (value) {
+                                if (value == 'edit') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditPlantPage(
+                                                plantId: plant.id!,
+                                              ))).then(
+                                    (value) {
+                                      context.read<PlantsBloc>().add(
+                                          PlantRequestById(id: widget.index));
+                                    },
+                                  );
+                                } else if (value == 'delete') {
+                                  // _deletePost(state.post['id']);
+                                }
+                              },
+                              itemBuilder: (BuildContext context) => [
+                                const PopupMenuItem<String>(
+                                  value: 'edit',
+                                  child: Text('Edit'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'delete',
+                                  child: Text('Delete'),
+                                ),
+                              ],
                             ),
                           ),
                           Container(
