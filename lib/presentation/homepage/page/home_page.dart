@@ -14,6 +14,7 @@ import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
 import 'package:tomacare/presentation/comunity/page/community_page.dart';
 import 'package:tomacare/presentation/comunity/page/create_community.dart';
 import 'package:tomacare/presentation/information/bloc/information_bloc.dart';
+import 'package:tomacare/presentation/information/pages/information_pages.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
 import 'package:tomacare/presentation/plants/pages/plant.dart';
@@ -682,11 +683,22 @@ class InformationSlider extends StatelessWidget {
       width: double.maxFinite,
       height: 150,
       child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            final Information information = informations[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          final Information information = informations[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InformationDetailPage(
+                        diseaseData: information,
+                        ),
+                  ),
+                );
+              },
               child: SizedBox(
                 width: 300,
                 height: 120,
@@ -697,43 +709,49 @@ class InformationSlider extends StatelessWidget {
                   child: Row(
                     children: [
                       SizedBox(
-                          height: double.infinity,
-                          child: ClipRRect(
-                            child: Image.network(
-                                'https://i.pinimg.com/474x/ae/bd/32/aebd3210fda7a94ff810e0a9abb99715.jpg'),
-                          )),
-                      Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              information.title,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 12),
-                              decoration: BoxDecoration(
-                                  color: Colors.red.shade800,
-                                  borderRadius: BorderRadius.circular(1000)),
-                              child: Text(
-                                information.type,
-                                style: TextStyle(color: neutral06),
-                              ),
-                            )
-                          ],
+                        height: double.infinity,
+                        child: ClipRRect(
+                          child: Image.network(
+                            'https://i.pinimg.com/474x/ae/bd/32/aebd3210fda7a94ff810e0a9abb99715.jpg',
+                          ),
                         ),
-                      ))
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                information.title,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade800,
+                                  borderRadius: BorderRadius.circular(1000),
+                                ),
+                                child: Text(
+                                  information.type,
+                                  style: TextStyle(color: neutral06),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
   }
 }
