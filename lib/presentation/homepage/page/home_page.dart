@@ -11,6 +11,7 @@ import 'package:tomacare/domain/entities/plant.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/camera/pages/camera.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
+import 'package:tomacare/presentation/comunity/page/community_detail.dart';
 import 'package:tomacare/presentation/comunity/page/community_page.dart';
 import 'package:tomacare/presentation/comunity/page/create_community.dart';
 import 'package:tomacare/presentation/information/bloc/information_bloc.dart';
@@ -433,65 +434,75 @@ class _HomePageScreenState extends State<HomePageScreen> {
           itemBuilder: (context, index) {
             final post = posts[index];
 
-            return SizedBox(
-              width: 275,
-              child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        height: double.maxFinite,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15)),
-                          child: Image.network(
-                            post['image_url'],
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PostDetailPage(
+                              postId: post['id'],
+                            )));
+              },
+              child: SizedBox(
+                width: 275,
+                child: Card(
+                    clipBehavior: Clip.antiAlias,
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: double.maxFinite,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15)),
+                            child: Image.network(
+                              post['image_url'],
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            post['title'],
-                            style: TextStyle(color: neutral06),
+                        Container(
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              post['title'],
+                              style: TextStyle(color: neutral06),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: neutral06,
-                                  borderRadius: BorderRadius.circular(1000)),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                post['count_like'].toString() + ' Likes',
-                                style: TextStyle(color: neutral01),
-                              ),
-                            )),
-                      )
-                    ],
-                  )),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 4),
+                                decoration: BoxDecoration(
+                                    color: neutral06,
+                                    borderRadius: BorderRadius.circular(1000)),
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  post['count_like'].toString() + ' Likes',
+                                  style: TextStyle(color: neutral01),
+                                ),
+                              )),
+                        )
+                      ],
+                    )),
+              ),
             );
           }),
     );
@@ -694,8 +705,8 @@ class InformationSlider extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => InformationDetailPage(
-                        diseaseData: information,
-                        ),
+                      diseaseData: information,
+                    ),
                   ),
                 );
               },
