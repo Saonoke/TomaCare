@@ -60,9 +60,9 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
     });
 
     on<CreatePost>((event, emit) async {
+      emit(ComunityLoading());
       final Map<String, dynamic> imagesUploaded =
           await Cloudinary().upload(event.imagePath);
-      emit(ComunityLoading());
       try {
         final post = await comunityService.createPost(
             title: event.title,
