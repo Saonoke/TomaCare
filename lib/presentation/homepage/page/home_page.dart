@@ -18,6 +18,7 @@ import 'package:tomacare/presentation/information/bloc/information_bloc.dart';
 import 'package:tomacare/presentation/information/pages/information_pages.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
+import 'package:tomacare/presentation/plants/pages/detaill_plant.dart';
 import 'package:tomacare/presentation/plants/pages/plant.dart';
 import 'package:tomacare/presentation/user/page/menu_page.dart';
 import 'package:tomacare/presentation/weather/bloc/weather_bloc.dart';
@@ -545,47 +546,57 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 itemCount: plants.length,
                 itemBuilder: (context, index) {
                   final plant = plants[index];
-                  return SizedBox(
-                    width: 175,
-                    child: Card(
-                      elevation: 3,
-                      color: neutral06,
-                      clipBehavior: Clip.antiAlias,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: Image.network(
-                                plant.image_path,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailPlantPage(
+                                    index: plant.id!,
+                                  )));
+                    },
+                    child: SizedBox(
+                      width: 175,
+                      child: Card(
+                        elevation: 3,
+                        color: neutral06,
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15)),
+                                child: Image.network(
+                                  plant.image_path,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  plant.title,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: neutral01),
-                                ),
-                                Text(plant.condition)
-                              ],
-                            ),
-                          )
-                        ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    plant.title,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: neutral01),
+                                  ),
+                                  Text(plant.condition)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );

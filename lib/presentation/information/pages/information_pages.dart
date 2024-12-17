@@ -84,7 +84,7 @@ class InformationDetailPage extends StatelessWidget {
                       "Type: ${diseaseData.type}",
                       style: TextStyle(color: Colors.white),
                     ),
-                    backgroundColor: primaryColor,
+                    backgroundColor: Colors.red.shade800,
                   ),
                 ],
               ),
