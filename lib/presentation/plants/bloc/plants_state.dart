@@ -19,8 +19,11 @@ final class PlantsLoading extends PlantsState {
 final class PlantsSuccess extends PlantsState {
   final List<Plant> plants;
   final List<Task>? tasks;
+  final Map<String, dynamic>? status;
+  final String? username;
 
-  const PlantsSuccess({required this.plants, this.tasks});
+  const PlantsSuccess(
+      {required this.plants, this.tasks, this.status, this.username});
 
   @override
   List<Object> get props => [plants];

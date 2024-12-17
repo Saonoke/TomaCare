@@ -29,6 +29,16 @@ final class WeatherSuccess extends WeatherState {
   List<Object> get props => [placemarks, weather_code];
 }
 
+final class WeatherSuccessTime extends WeatherState {
+  final List placemarks;
+  final List<Weather> weathers;
+
+  const WeatherSuccessTime({required this.placemarks, required this.weathers});
+
+  @override
+  List<Object> get props => [placemarks, weathers];
+}
+
 final class WeatherFailed extends WeatherState {
   final String message;
 

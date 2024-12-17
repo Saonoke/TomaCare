@@ -178,7 +178,8 @@ class ComunityService {
     }
   }
 
-  Future<Map<String, dynamic>> editPost(int postId, String title, String body) async {
+  Future<Map<String, dynamic>> editPost(
+      int postId, String title, String body) async {
     final url = Uri.parse('$baseurl/post/$postId');
 
     Map<String, String> headers = {
@@ -186,14 +187,8 @@ class ComunityService {
       'authorization': 'Bearer ${await saveService.getToken()}'
     };
 
-    final response = await http.put(
-        url,
-        headers: headers,
-        body: jsonEncode({
-          'title': title,
-          'body': body
-        })
-    );
+    final response = await http.put(url,
+        headers: headers, body: jsonEncode({'title': title, 'body': body}));
 
     if (response.statusCode == HttpStatus.created) {
       final Map<String, dynamic> jsonData = jsonDecode(response.body);

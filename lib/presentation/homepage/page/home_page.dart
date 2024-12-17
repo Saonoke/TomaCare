@@ -3,14 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tomacare/domain/entities/information.dart';
 import 'package:tomacare/domain/entities/plant.dart';
-import 'package:tomacare/domain/entities/post.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/camera/pages/camera.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
@@ -19,11 +16,10 @@ import 'package:tomacare/presentation/comunity/page/create_community.dart';
 import 'package:tomacare/presentation/information/bloc/information_bloc.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
-
 import 'package:tomacare/presentation/plants/pages/plant.dart';
 import 'package:tomacare/presentation/user/page/menu_page.dart';
-import 'package:tomacare/presentation/user/page/profile_page.dart';
 import 'package:tomacare/presentation/weather/bloc/weather_bloc.dart';
+import 'package:tomacare/presentation/weather/pages/weather_pages.dart';
 
 class HomePageView extends StatelessWidget {
   const HomePageView({super.key});
@@ -56,10 +52,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
       return Future.error('Location services are disabled');
     }
 
     permission = await Geolocator.checkPermission();
+
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -71,11 +69,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    final currentPosition = await Geolocator.getCurrentPosition();
-    if (!mounted) return;
-    setState(() {
-      position = currentPosition;
-    });
+    try {
+      final currentPosition = await Geolocator.getCurrentPosition();
+      if (!mounted) return;
+      setState(() {
+        position = currentPosition;
+      });
+    } catch (e) {
+      return Future.error('Failed to get location: $e');
+    }
   }
 
   @override
@@ -87,6 +89,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: neutral06,
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.all(12),
@@ -100,45 +103,122 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       case WeatherInitial():
                         if (position == null) {
                           return Center(
-                            child: Skeletonizer(
-                              enabled: true,
-                              enableSwitchAnimation: true,
-                              child: Card(
-                                child: ListTile(
-                                  title: Text('Item number as title'),
-                                  subtitle: const Text('Subtitle here'),
-                                  trailing: const Icon(
-                                    Icons.ac_unit,
-                                    size: 32,
-                                  ),
-                                ),
-                              ),
+                              child: Skeletonizer(
+                            enabled: true,
+                            enableSwitchAnimation: true,
+                            child: Card(
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 16),
+                                  child: Column(children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'krisna andika',
+                                          style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: neutral06),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Tes',
+                                              style: TextStyle(
+                                                  fontSize: 54,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: neutral06),
+                                            ),
+                                            Text(
+                                              "krisna",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: neutral06),
+                                            )
+                                          ],
+                                        ),
+                                        weatherIcon(WeatherCondition.clear)
+                                      ],
+                                    ),
+                                  ])),
                             ),
-                          );
+                          ));
                         } else {
                           context.read<WeatherBloc>().add(getWeather(
                               latitude: position!.latitude,
                               longitude: position!.longitude));
                           return Center(
-                            child: Skeletonizer(
-                              enabled: true,
-                              enableSwitchAnimation: true,
-                              child: Card(
-                                child: ListTile(
-                                  title: Text('Item number as title'),
-                                  subtitle: const Text('Subtitle here'),
-                                  trailing: const Icon(
-                                    Icons.ac_unit,
-                                    size: 32,
-                                  ),
-                                ),
-                              ),
+                              child: Skeletonizer(
+                            enabled: true,
+                            enableSwitchAnimation: true,
+                            child: Card(
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 16),
+                                  child: Column(children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'krisna andika',
+                                          style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: neutral06),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Tes',
+                                              style: TextStyle(
+                                                  fontSize: 54,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: neutral06),
+                                            ),
+                                            Text(
+                                              "krisna",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: neutral06),
+                                            )
+                                          ],
+                                        ),
+                                        weatherIcon(WeatherCondition.clear)
+                                      ],
+                                    ),
+                                  ])),
                             ),
-                          );
+                          ));
                         }
                       case WeatherSuccess():
                         return GestureDetector(
-                            onTap: () {}, child: WeatherCard(state));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          WeatherPages(position: position)));
+                            },
+                            child: WeatherCard(state));
                       default:
                         return Text('error');
                     }
@@ -160,16 +240,53 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     switch (state) {
                       case PlantsInitial():
                         context.read<PlantsBloc>().add(PlantsRequest());
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+
+                        return Container();
                       case PlantsSuccess():
                         final List<Plant> plants = state.plants;
                         return plants_slider(plants);
                       case PlantsLoading():
-                        return Center(
-                          child: CircularProgressIndicator(),
+                        return SizedBox(
+                          width: double.maxFinite,
+                          height: 175,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Skeletonizer(
+                                    enabled: true,
+                                    enableSwitchAnimation: true,
+                                    child: SizedBox(
+                                      width: 175,
+                                      child: Card(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: 100,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 5),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('title'),
+                                                  Text('condition')
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                              }),
                         );
+
                       case PlantsFailed():
                         return Center(
                           child: ElevatedButton(
@@ -199,16 +316,57 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   listener: (context, state) {},
                   builder: (context, state) {
                     switch (state) {
-                      case ComunityInitial():
-                        context.read<ComunityBloc>().add(ComunityStarted());
-                        return CircularProgressIndicator();
                       case ComunityLoaded():
                         final List<Map<String, dynamic>> posts = state.posts;
                         return CommunitySlider(posts);
 
-                      default:
+                      case ComunityError():
                         return Center(
                           child: Text('tes'),
+                        );
+
+                      case ComunityInitial():
+                        context.read<ComunityBloc>().add(ComunityStarted());
+                        return Container();
+
+                      default:
+                        return SizedBox(
+                          width: double.maxFinite,
+                          height: 175,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Skeletonizer(
+                                    enabled: true,
+                                    enableSwitchAnimation: true,
+                                    child: SizedBox(
+                                      width: 300,
+                                      height: 120,
+                                      child: Card(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 5),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('title'),
+                                                  Text('condition')
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                              }),
                         );
                     }
                   }),
@@ -225,18 +383,38 @@ class _HomePageScreenState extends State<HomePageScreen> {
               BlocConsumer<InformationBloc, InformationState>(
                   builder: (context, state) {
                     switch (state) {
-                      case InformationLoading():
+                      case InformationInitial():
+                        context.read<InformationBloc>().add(getInformation());
                         return CircularProgressIndicator();
+
                       case InformationSuccess():
                         final List<Information> informations =
                             state.informations;
                         return InformationSlider(informations: informations);
+
                       default:
-                        context.watch<InformationBloc>().add(getInformation());
-                        return CircularProgressIndicator();
+                        return SizedBox(
+                          width: double.maxFinite,
+                          height: 175,
+                          child: ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Skeletonizer(
+                                    enabled: true,
+                                    enableSwitchAnimation: true,
+                                    child: SizedBox(
+                                      child: Card(
+                                          child: ListTile(
+                                        title: Text('tomato bacterial spot'),
+                                        subtitle: Text('bakteri'),
+                                      )),
+                                    ));
+                              }),
+                        );
                     }
                   },
-                  listener: (context, state) {})
+                  listener: (context, state) {}),
+              Padding(padding: const EdgeInsets.only(bottom: 25))
             ],
           ),
         ),
@@ -322,55 +500,85 @@ class _HomePageScreenState extends State<HomePageScreen> {
     return SizedBox(
         width: double.maxFinite,
         height: 175,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: plants.length,
-          itemBuilder: (context, index) {
-            final plant = plants[index];
-            return SizedBox(
-              width: 175,
-              child: Card(
-                color: neutral06,
-                clipBehavior: Clip.antiAlias,
+        child: plants.isEmpty
+            ? Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      height: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15)),
-                        child: Image.network(
-                          plant.image_path,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
+                    Text(
+                      'Mulai scan pertamamu',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            plant.title,
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: neutral01),
-                          ),
-                          Text(plant.condition)
-                        ],
-                      ),
-                    )
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          minimumSize: Size(double.infinity, 50),
+                        ),
+                        child: Text(
+                          'Ambil gambar',
+                          style: TextStyle(
+                              color: neutral06,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ))
                   ],
                 ),
-              ),
-            );
-          },
-        ));
+              )
+            : ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: plants.length,
+                itemBuilder: (context, index) {
+                  final plant = plants[index];
+                  return SizedBox(
+                    width: 175,
+                    child: Card(
+                      elevation: 3,
+                      color: neutral06,
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                              child: Image.network(
+                                plant.image_path,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  plant.title,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: neutral01),
+                                ),
+                                Text(plant.condition)
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ));
   }
 
   Container WeatherCard(WeatherSuccess state) {
@@ -428,7 +636,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     switch (condition) {
       case WeatherCondition.clear:
         return Icon(
-          Iconsax.sun,
+          Iconsax.sun_1,
           size: 92,
           color: neutral06,
         );
@@ -446,7 +654,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         );
       case WeatherCondition.snowy:
         return Icon(
-          Iconsax.cloud_snow,
+          Iconsax.sun,
           size: 92,
           color: neutral06,
         );
@@ -472,29 +680,54 @@ class InformationSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.maxFinite,
-      height: 100,
+      height: 150,
       child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: informations.length,
+          itemCount: 5,
           itemBuilder: (context, index) {
             final Information information = informations[index];
-            return SizedBox(
-              width: 300,
-              height: 120,
-              child: Card(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: SizedBox(
+                width: 300,
+                height: 120,
+                child: Card(
+                  elevation: 3,
+                  color: neutral06,
+                  clipBehavior: Clip.antiAlias,
+                  child: Row(
                     children: [
-                      Text(
-                        information.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                      SizedBox(
+                          height: double.infinity,
+                          child: ClipRRect(
+                            child: Image.network(
+                                'https://i.pinimg.com/474x/ae/bd/32/aebd3210fda7a94ff810e0a9abb99715.jpg'),
+                          )),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              information.title,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 12),
+                              decoration: BoxDecoration(
+                                  color: Colors.red.shade800,
+                                  borderRadius: BorderRadius.circular(1000)),
+                              child: Text(
+                                information.type,
+                                style: TextStyle(color: neutral06),
+                              ),
+                            )
+                          ],
                         ),
-                      )
+                      ))
                     ],
                   ),
                 ),

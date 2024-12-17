@@ -3,6 +3,7 @@ import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
+import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,21 +27,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff2f8f4),
-      body: SingleChildScrollView(
+      backgroundColor: neutral06,
+      body: Center(
         child: Form(
           key: _formKey,
-          child: Container(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 header(context),
                 const SizedBox(
-                  height: 30,
+                  height: 32,
                 ),
                 inputField(),
-                const SizedBox(
-                  height: 59,
-                ),
                 footer(context),
               ],
             ),
@@ -57,23 +57,8 @@ class _LoginPageState extends State<LoginPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.only(bottom: 11),
-              child: const Text(
-                'Enter your email',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  height: 20 / 14,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
             SizedBox(
-              // height: 48 + 32,
-              width: 312,
+              width: double.infinity,
               child: TextFormField(
                 controller: emailController,
                 validator: (value) {
@@ -83,17 +68,17 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
                 decoration: InputDecoration(
-                    hintText: 'Email',
-                    labelText: 'Email',
+                    focusColor: primaryColor,
+                    labelText: 'Nama pengguna atau email',
                     labelStyle: const TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 12,
+                      fontSize: 16,
                       fontWeight: FontWeight.w300,
                       height: 22 / 12,
                       letterSpacing: -0.408,
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 29.0, vertical: 13),
+                        horizontal: 32, vertical: 18),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(1000))),
               ),
@@ -106,28 +91,14 @@ class _LoginPageState extends State<LoginPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.only(bottom: 11),
-              child: const Text(
-                'Enter your password',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  height: 20 / 14,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
             password(
               controller: passwordController,
-              label: 'Password',
+              label: 'Kata sandi',
             ),
           ],
         ),
         const SizedBox(
-          height: 38,
+          height: 32,
         ),
         BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {},
@@ -144,7 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Color(0xff27AE61)),
-                    fixedSize: WidgetStatePropertyAll(Size(312, 48)),
+                    fixedSize:
+                        WidgetStatePropertyAll(Size(double.maxFinite, 54)),
                   ),
                   child: state is AuthLoading
                       ? CircularProgressIndicator()
@@ -162,39 +134,8 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
         const SizedBox(
-          height: 40,
+          height: 16,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Tidak punya akun ? ',
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  height: 22 / 17,
-                  letterSpacing: -0.408,
-                  color: Color(0xff616362)),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: const Text(
-                'register',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  height: 22 / 17,
-                  letterSpacing: -0.408,
-                  color: Color(0xff27AE61),
-                ),
-              ),
-            ),
-          ],
-        )
       ],
     );
   }
@@ -204,14 +145,18 @@ header(context) {
   return Column(
     children: [
       SizedBox(
-        child: Center(child: Image.asset("images/color.png")),
-        height: 150,
+        child: Center(
+            child: Image.asset(
+          "images/color.png",
+          height: 150,
+          width: 300,
+        )),
       ),
       Text(
         'Login to Your Account',
         style: TextStyle(
           fontFamily: 'Poppins',
-          fontSize: 17,
+          fontSize: 22,
           fontWeight: FontWeight.w700,
           height: 22 / 17,
           letterSpacing: -0.408,
@@ -256,7 +201,7 @@ class _passwordState extends State<password> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 312,
+      width: double.maxFinite,
       child: FancyPasswordField(
         validationRules: rules,
         validationRuleBuilder: (rules, value) {
@@ -292,14 +237,14 @@ class _passwordState extends State<password> {
           labelText: widget.label,
           labelStyle: const TextStyle(
             fontFamily: 'Poppins',
-            fontSize: 12,
+            fontSize: 16,
             fontWeight: FontWeight.w300,
             height: 22 / 12,
             letterSpacing: -0.408,
           ),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 29.0,
-            vertical: 13,
+            horizontal: 32.0,
+            vertical: 16,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(1000),
@@ -314,7 +259,7 @@ footer(context) {
   return Column(
     children: [
       const Text(
-        'Or',
+        'Atau',
         style: TextStyle(
           fontFamily: 'Poppins',
           fontSize: 17,
@@ -324,14 +269,14 @@ footer(context) {
         ),
       ),
       const SizedBox(
-        height: 11,
+        height: 16,
       ),
       BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {},
         builder: (context, state) {
           return SizedBox(
-            height: 48,
-            width: 312,
+            height: 52,
+            width: double.maxFinite,
             child: ElevatedButton(
               onPressed: state is AuthLoading
                   ? null // Nonaktifkan tombol saat sedang loading
@@ -339,12 +284,12 @@ footer(context) {
                       context.read<AuthBloc>().add(SignInWithGoogle());
                     },
               style: ButtonStyle(
-                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                backgroundColor: const WidgetStatePropertyAll(neutral06),
                 elevation: const WidgetStatePropertyAll(2),
                 shape: WidgetStatePropertyAll(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(1000),
-                    side: BorderSide(color: Colors.grey.shade300),
+                    side: BorderSide(color: neutral01),
                   ),
                 ),
               ),
@@ -357,10 +302,11 @@ footer(context) {
                       children: [
                         const SizedBox(width: 8),
                         const Text(
-                          'Sign in with Google',
+                          'Masuk dengan Google',
                           style: TextStyle(
+                            fontSize: 16,
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -368,6 +314,40 @@ footer(context) {
             ),
           );
         },
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Tidak punya akun ? ',
+              style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                  height: 22 / 17,
+                  letterSpacing: -0.408,
+                  color: Color(0xff616362)),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              child: const Text(
+                'register',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                  height: 22 / 17,
+                  letterSpacing: -0.408,
+                  color: Color(0xff27AE61),
+                ),
+              ),
+            ),
+          ],
+        ),
       )
     ],
   );

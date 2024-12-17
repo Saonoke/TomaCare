@@ -147,6 +147,7 @@ class _CameraAppState extends State<CameraApp> {
           } else if (state is CameraLoading) {
             showDialog(
                 context: context,
+                barrierDismissible: false,
                 builder: (context) {
                   return AlertDialog(
                     backgroundColor: neutral06,
@@ -303,14 +304,51 @@ class DisplayPictureScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Image'),
       ),
-      body: Column(
-        children: [
-          Image.file(File(image!.path)),
-          Text(predicted),
-          Text(percentage.toString()),
-          Text(information.content),
-          Text(information.medicine)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.maxFinite,
+              child: ClipRRect(
+                child: Image.file(
+                  File(image!.path),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Text(
+              predicted,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(percentage.toInt().toString() + '%',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Container(
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Tentang ' + predicted,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(information.content)
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Pengobatan',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(information.medicine),
+                  Padding(padding: const EdgeInsets.only(bottom: 6))
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -16,3 +16,12 @@ final class getTasks extends TasksEvent {
   @override
   List<Object> get props => [tanggal];
 }
+
+final class updateTask extends TasksEvent {
+  final Task task;
+  final int plantId;
+  const updateTask({required this.task, required this.plantId});
+
+  @override
+  List<Object> get props => [task];
+}

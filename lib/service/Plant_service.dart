@@ -13,16 +13,18 @@ import 'package:tomacare/utils/exceptions/exceptions.dart';
 class PlantService {
   final Cloudinary cloudinary = Cloudinary();
   Future<List<Plant>> getPlants() async {
+    print("try to fetch");
     final url = Uri.parse('$baseurl/plants/');
     final token = await SaveAuth().getToken();
 
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
     final response = await http.get(url, headers: headers);
-
     List jsonList = jsonDecode(response.body);
 
     List<Plant> plants = jsonList.map((json) => Plant.fromJson(json)).toList();
-
     if (response.statusCode == 200) {
       return plants;
     } else if (response.statusCode == 401) {
@@ -35,10 +37,12 @@ class PlantService {
   Future<Plant> getPlant({required int id}) async {
     final url = Uri.parse('$baseurl/plants/$id');
     final token = await SaveAuth().getToken();
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
     final response = await http.get(url, headers: headers);
     final Map<String, dynamic> plant = jsonDecode(response.body)['plant'];
-
     final List taskJson = jsonDecode(response.body)['task'];
     final List<Task> task =
         taskJson.map((json) => Task.fromJson(json)).toList();
@@ -47,6 +51,8 @@ class PlantService {
     plant.addAll({'tasks': task});
 
     if (response.statusCode == HttpStatus.ok) {
+      print(plant);
+      print(Plant.fromJson(plant));
       return Plant.fromJson(plant);
     } else {
       throw Exception();
@@ -56,17 +62,27 @@ class PlantService {
   Future<Plant> createPlant({required Plant plant}) async {
     final url = Uri.parse('$baseurl/plants/');
     final token = await SaveAuth().getToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
 
-    headers.addAll({'authorization': 'Bearer $token'});
-    print('start post');
     final response = await http.post(url,
         headers: headers, body: jsonEncode(plant.toJson()));
 
     if (response.statusCode == HttpStatus.created) {
       return Plant.fromJson(jsonDecode(response.body));
     } else {
-      print('error');
+      print(jsonDecode(response.body));
       throw Exception();
     }
+  }
+
+  Future<Map<String, dynamic>> getStatusCount(
+      {required List<Plant> plants}) async {
+    int totalDone = plants.where((item) => item.done == true).length;
+    int totalNotDone = plants.length - totalDone;
+
+    return {"done": totalDone, "not_done": totalNotDone};
   }
 }

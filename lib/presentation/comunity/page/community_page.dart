@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tomacare/domain/entities/post.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
@@ -68,6 +69,7 @@ class _CommunityPageState extends State<CommunityPageList> {
               ),
             ),
             Expanded(
+
               child: BlocListener<ComunityBloc, ComunityState>(
                 listener: (context, state) {
                   if (state is ComunityLoaded) {
@@ -111,6 +113,7 @@ class _CommunityPageState extends State<CommunityPageList> {
                         context.read<AuthBloc>().add(Logout());
                       }
                       return Center(
+
                         child: Text(
                           state.message,
                           style: const TextStyle(

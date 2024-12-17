@@ -11,6 +11,17 @@ final class TasksInitial extends TasksState {}
 
 final class TasksLoading extends TasksState {}
 
-final class TasksSuccess {}
+final class TasksSuccess extends TasksState {
+  final Task task;
 
-final class TasksFailed {}
+  const TasksSuccess({required this.task});
+
+  @override
+  List<Object> get props => [task];
+}
+
+final class TasksFailed extends TasksState {
+  final String message;
+
+  const TasksFailed({required this.message});
+}

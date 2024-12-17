@@ -422,7 +422,6 @@ class _PostDetailViewState extends State<PostDetailView> {
           return const Center(child: Text('No data available.'));
         },
       ),
-
     );
   }
 }

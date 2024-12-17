@@ -12,8 +12,10 @@ class InformationService {
   Future<List<Information>> getInformationAll() async {
     final String? token = await saveService.getToken();
     final url = Uri.parse('$baseurl/information');
-
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode == HttpStatus.ok) {
@@ -29,8 +31,10 @@ class InformationService {
   Future<Information> getInformation(int index) async {
     final String? token = await saveService.getToken();
     final url = Uri.parse('$baseurl/information/$index');
-
-    headers.addAll({'authorization': 'Bearer $token'});
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
+    };
     final response = await http.get(url, headers: headers);
     if (response.statusCode == HttpStatus.ok) {
       final data = Information.fromJson(jsonDecode(response.body));

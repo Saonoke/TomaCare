@@ -1,10 +1,10 @@
 class Task {
-  final bool done;
+  bool done;
   final int id;
   final String title;
   final String tanggal;
 
-  const Task(
+  Task(
       {required this.done,
       required this.id,
       required this.title,
