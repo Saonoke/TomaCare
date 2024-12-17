@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:tomacare/domain/entities/weather.dart';
 
 import 'package:tomacare/service/weather_service.dart';
 
@@ -36,6 +37,36 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
             windspeed: current_weather['windspeed'],
             weatherCondition: condition));
       } catch (e) {
+        emit((WeatherFailed(message: 'gagal fetch weather')));
+      }
+    });
+    on<getWeatherDetails>((event, emit) async {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(event.latitude, event.longitude);
+      try {
+        final Map<String, dynamic> response = await weatherService
+            .getWeatherDetail(event.longitude, event.latitude);
+
+        List<dynamic> times = response['hourly']['time'];
+        List<dynamic> codes = response['hourly']['weather_code'];
+        List<dynamic> temperature = response['hourly']['temperature_2m'];
+
+        // Buat list Weather dari data
+        List<Weather> weathers = times.asMap().entries.map((entry) {
+          int index = entry.key; // Ambil indeks dari times
+          String time = entry.value; // Ambil waktu
+          WeatherCondition condition = getWeatherCondition(
+              codes[index]); // Ambil kondisi cuaca berdasarkan indeks
+          return Weather(
+              time: time,
+              weatherCondition: condition,
+              weatherCode: codes[index],
+              temperature: temperature[index].toInt());
+        }).toList();
+
+        emit(WeatherSuccessTime(placemarks: placemarks, weathers: weathers));
+      } catch (e) {
+        print(e);
         emit((WeatherFailed(message: 'gagal fetch weather')));
       }
     });

@@ -12,9 +12,13 @@ class SaveAuth {
   }
 
   Future<String?> getToken() async {
+    print('from tokennnnnnnnnnnnnnnnnnnnnnnnnnn');
     final String? token = await storage.read(key: 'jwt_token');
     if (token != null) {
       bool hasExpired = JwtDecoder.isExpired(token);
+      print(hasExpired);
+      print(JwtDecoder.getRemainingTime(token));
+
       if (hasExpired) {
         final String? refresh_token = await storage.read(key: 'refresh_token');
         final updated_token = AuthService()
@@ -23,6 +27,7 @@ class SaveAuth {
       }
     }
 
+    print(JwtDecoder.decode(token!));
     return token;
   }
 

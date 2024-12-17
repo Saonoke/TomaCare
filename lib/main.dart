@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +27,6 @@ void main() {
           '/register': (context) => RegisterPage(),
           '/home': (context) => HomePage(),
           '/': (context) => Splashscreen(),
-          '/weather': (context) => WeatherPages()
         },
       ),
     ),

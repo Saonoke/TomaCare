@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tomacare/domain/entities/plant.dart';
+import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
 import 'package:tomacare/service/cloudinary.dart';
 
@@ -46,43 +48,21 @@ class _AddplantState extends State<Addplant> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff2f8f4),
+      backgroundColor: neutral06,
       appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            Image.file(
-              File(widget.image!.path),
-              height: 100,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(bottom: 11),
-                  child: const Text(
-                    'Nama Daun',
-                    textAlign: TextAlign.left,
-                  ),
+            SizedBox(
+              width: double.maxFinite,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.file(
+                  File(widget.image!.path),
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                        hintText: 'Nama Daun',
-                        labelText: 'Nama Daun',
-                        labelStyle: TextStyle(fontSize: 14),
-                        hintStyle: TextStyle(fontSize: 14),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 16),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(1000))),
-                  ),
-                )
-              ],
+              ),
             ),
             SizedBox(
               height: 20,
@@ -94,17 +74,17 @@ class _AddplantState extends State<Addplant> {
                   padding: const EdgeInsets.only(left: 10),
                   margin: const EdgeInsets.only(bottom: 11),
                   child: const Text(
-                    'Deskripsi',
+                    'Nama Tumbuhan',
                     textAlign: TextAlign.left,
                   ),
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: TextFormField(
-                    controller: descController,
+                    controller: nameController,
                     decoration: InputDecoration(
-                        hintText: 'Deskripsi',
-                        labelText: 'Deskripsi',
+                        hintText: 'Nama Tumbuhan',
+                        labelText: 'Nama Tumbuhan',
                         labelStyle: TextStyle(fontSize: 14),
                         hintStyle: TextStyle(fontSize: 14),
                         contentPadding: const EdgeInsets.symmetric(
@@ -122,6 +102,16 @@ class _AddplantState extends State<Addplant> {
               listener: (context, state) {
                 if (state is PlantsMessage) {
                   Navigator.of(context).pushNamed('/home');
+                } else if (state is PlantsLoading) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: neutral06,
+                          title: Text('Proses'),
+                          content: Text('Silahkan Tunggu ...'),
+                        );
+                      });
                 }
               },
               builder: (context, state) {
@@ -129,15 +119,20 @@ class _AddplantState extends State<Addplant> {
                     onPressed: () async {
                       final Map<String, dynamic> imagesUploaded =
                           await Cloudinary().upload(widget.image!);
+
                       context.read<PlantsBloc>().add(PlantsCreate(
-                          plant: Plant(
-                              title: nameController.text,
-                              condition: widget.predicted,
-                              image_path: imagesUploaded['url'])));
+                            plant: Plant(
+                                title: nameController.text,
+                                condition: widget.predicted,
+                                image_path: imagesUploaded['url'],
+                                date: DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.now())),
+                          ));
                     },
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(Colors.green)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      minimumSize: Size(double.infinity, 50),
+                    ),
                     child: Text(
                       'Tambah',
                       style: TextStyle(

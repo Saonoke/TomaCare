@@ -16,3 +16,13 @@ class getWeather extends WeatherEvent {
   @override
   List<Object> get props => [longitude, latitude];
 }
+
+class getWeatherDetails extends WeatherEvent {
+  final double longitude;
+  final double latitude;
+
+  const getWeatherDetails({required this.latitude, required this.longitude});
+
+  @override
+  List<Object> get props => [longitude, latitude];
+}

@@ -83,6 +83,7 @@ flutter:
   assets:
     - images/tomat.jpg
     - images/color.png
+    - images/plantIllustration.png
 
   fonts:
     - family: Poppins

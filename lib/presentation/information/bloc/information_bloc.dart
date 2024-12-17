@@ -11,6 +11,7 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
     final InformationService informationService = InformationService();
     on<getInformationId>((event, emit) async {
       emit(InformationLoading());
+
       try {
         final Information response =
             await informationService.getInformation(event.id);
@@ -22,6 +23,7 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
 
     on<getInformation>((event, emit) async {
       emit(InformationLoading());
+      await Future.delayed(Duration(seconds: 3));
       try {
         final List<Information> response =
             await informationService.getInformationAll();

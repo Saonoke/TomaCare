@@ -14,6 +14,8 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
   ComunityBloc() : super(ComunityInitial()) {
     on<ComunityStarted>((event, emit) async {
       emit(ComunityLoading());
+
+      await Future.delayed(Duration(seconds: 3));
       try {
         final posts = await comunityService.getAll();
         emit(ComunityLoaded(posts));

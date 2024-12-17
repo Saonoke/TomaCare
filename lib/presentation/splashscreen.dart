@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
+import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -38,8 +39,27 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('loading'),
+      backgroundColor: neutral06,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('images/color.png'),
+              SizedBox(
+                height: 16,
+              ),
+              Text('Tunggu Sebentar'),
+              SizedBox(
+                height: 16,
+              ),
+              CircularProgressIndicator(
+                color: primaryColor,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

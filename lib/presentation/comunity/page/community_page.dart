@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tomacare/domain/entities/post.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
@@ -68,7 +69,20 @@ class _CommunityPageState extends State<CommunityPageList> {
               child: BlocBuilder<ComunityBloc, ComunityState>(
                 builder: (context, state) {
                   if (state is ComunityLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Skeletonizer(
+                      enabled: true,
+                      enableSwitchAnimation: true,
+                      child: Card(
+                        child: ListTile(
+                          title: Text('Item number as title'),
+                          subtitle: const Text('Subtitle here'),
+                          trailing: const Icon(
+                            Icons.ac_unit,
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    );
                   } else if (state is ComunityLoaded) {
                     if (state.posts.isEmpty) {
                       return const Center(
