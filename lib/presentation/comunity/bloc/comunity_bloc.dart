@@ -74,13 +74,13 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
 
     on<PostReaction>((event, emit) async {
       if (state is ComunityLoaded) {
+
         final currentState = state as ComunityLoaded;
         try {
           final react =
               await comunityService.reaction(event.postId, event.reactionType);
           if (react) {
-            // Update the specific post's reaction in the list
-            final updatedPosts = currentState.posts.map((post) {
+            currentState.posts.map((post) {
               if (post['id'] == event.postId) {
                 return {
                   ...post,
@@ -90,8 +90,9 @@ class ComunityBloc extends Bloc<ComunityEvent, ComunityState> {
               }
               return post;
             }).toList();
+            final posts = await comunityService.getAll();
+            emit(ComunityLoaded(posts));
 
-            emit(ComunityLoaded(updatedPosts));
           } else {
             emit(ComunityReactionFailed());
           }

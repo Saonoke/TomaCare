@@ -109,7 +109,6 @@ class _PostDetailViewState extends State<PostDetailView> {
 
   @override
   Widget build(BuildContext context) {
-]
     return BlocListener<ComunityBloc, ComunityState>(
       listener: (context, state) {},
       child: BlocBuilder<ComunityBloc, ComunityState>(
@@ -179,9 +178,9 @@ class _PostDetailViewState extends State<PostDetailView> {
                                   widget.currentUserId)
                                 Positioned(
                                   top: 10,
-                                  right:
-                                      10, // Position the button at the top-right corner
+                                  right: 10,
                                   child: PopupMenuButton<String>(
+                                    menuPadding: EdgeInsets.zero,
                                     icon: const Icon(
                                       Icons.more_vert, // Ellipsis icon
                                       color: Colors.white,
@@ -197,9 +196,8 @@ class _PostDetailViewState extends State<PostDetailView> {
                                                       postId: state.post['id'],
                                                     ))).then(
                                           (value) {
-                                            context
-                                                .read<ComunityBloc>()
-                                                .add(OpenPost(state.post['id']));
+                                            context.read<ComunityBloc>().add(
+                                                OpenPost(state.post['id']));
                                           },
                                         );
                                       } else if (value == 'delete') {
@@ -322,13 +320,9 @@ class _PostDetailViewState extends State<PostDetailView> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                const SizedBox(
-                                                    height:
-                                                        4), // Spasi kecil antara username dan komentar
+                                                const SizedBox(height: 2),
                                                 Text(comment['commentary']),
-                                                const SizedBox(
-                                                    height:
-                                                        4), // Spasi kecil antara komentar dan timestamp
+                                                const SizedBox(height: 1),
                                                 Text(
                                                   comment['timestamp'],
                                                   style: TextStyle(
@@ -341,6 +335,7 @@ class _PostDetailViewState extends State<PostDetailView> {
                                           // Tombol tindakan (opsional)
                                           if (isCurrentUser)
                                             PopupMenuButton<String>(
+                                              menuPadding: EdgeInsets.zero,
                                               icon: const Icon(
                                                 Icons
                                                     .more_vert, // Ikon ellipsis
