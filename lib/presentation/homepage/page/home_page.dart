@@ -11,11 +11,14 @@ import 'package:tomacare/domain/entities/plant.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/camera/pages/camera.dart';
 import 'package:tomacare/presentation/comunity/bloc/comunity_bloc.dart';
+import 'package:tomacare/presentation/comunity/page/community_detail.dart';
 import 'package:tomacare/presentation/comunity/page/community_page.dart';
 import 'package:tomacare/presentation/comunity/page/create_community.dart';
 import 'package:tomacare/presentation/information/bloc/information_bloc.dart';
+import 'package:tomacare/presentation/information/pages/information_pages.dart';
 import 'package:tomacare/presentation/misc/constant/app_constant.dart';
 import 'package:tomacare/presentation/plants/bloc/plants_bloc.dart';
+import 'package:tomacare/presentation/plants/pages/detaill_plant.dart';
 import 'package:tomacare/presentation/plants/pages/plant.dart';
 import 'package:tomacare/presentation/user/page/menu_page.dart';
 import 'package:tomacare/presentation/weather/bloc/weather_bloc.dart';
@@ -303,6 +306,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         return Center(
                           child: Text('error message'),
                         );
+                      default:
+                        return Center(
+                          child: Text('Error'),
+                        );
                     }
                   }),
               Padding(
@@ -435,65 +442,75 @@ class _HomePageScreenState extends State<HomePageScreen> {
           itemBuilder: (context, index) {
             final post = posts[index];
 
-            return SizedBox(
-              width: 275,
-              child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        height: double.maxFinite,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15)),
-                          child: Image.network(
-                            post['image_url'],
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PostDetailPage(
+                              postId: post['id'],
+                            )));
+              },
+              child: SizedBox(
+                width: 275,
+                child: Card(
+                    clipBehavior: Clip.antiAlias,
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: double.maxFinite,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15)),
+                            child: Image.network(
+                              post['image_url'],
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            post['title'],
-                            style: TextStyle(color: neutral06),
+                        Container(
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              post['title'],
+                              style: TextStyle(color: neutral06),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: neutral06,
-                                  borderRadius: BorderRadius.circular(1000)),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                post['count_like'].toString() + ' Likes',
-                                style: TextStyle(color: neutral01),
-                              ),
-                            )),
-                      )
-                    ],
-                  )),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 4),
+                                decoration: BoxDecoration(
+                                    color: neutral06,
+                                    borderRadius: BorderRadius.circular(1000)),
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  post['count_like'].toString() + ' Likes',
+                                  style: TextStyle(color: neutral01),
+                                ),
+                              )),
+                        )
+                      ],
+                    )),
+              ),
             );
           }),
     );
@@ -536,47 +553,61 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 itemCount: plants.length,
                 itemBuilder: (context, index) {
                   final plant = plants[index];
-                  return SizedBox(
-                    width: 175,
-                    child: Card(
-                      elevation: 3,
-                      color: neutral06,
-                      clipBehavior: Clip.antiAlias,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: Image.network(
-                                plant.image_path,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailPlantPage(
+                                    index: plant.id!,
+                                  ))).then(
+                        (value) {
+                          context.read<PlantsBloc>().add(PlantsRequest());
+                        },
+                      );
+                    },
+                    child: SizedBox(
+                      width: 175,
+                      child: Card(
+                        elevation: 3,
+                        color: neutral06,
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15)),
+                                child: Image.network(
+                                  plant.image_path,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  plant.title,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: neutral01),
-                                ),
-                                Text(plant.condition)
-                              ],
-                            ),
-                          )
-                        ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    plant.title,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: neutral01),
+                                  ),
+                                  Text(plant.condition)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -685,11 +716,22 @@ class InformationSlider extends StatelessWidget {
       width: double.maxFinite,
       height: 150,
       child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            final Information information = informations[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          final Information information = informations[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InformationDetailPage(
+                      diseaseData: information,
+                    ),
+                  ),
+                );
+              },
               child: SizedBox(
                 width: 300,
                 height: 120,
@@ -700,43 +742,49 @@ class InformationSlider extends StatelessWidget {
                   child: Row(
                     children: [
                       SizedBox(
-                          height: double.infinity,
-                          child: ClipRRect(
-                            child: Image.network(
-                                'https://i.pinimg.com/474x/ae/bd/32/aebd3210fda7a94ff810e0a9abb99715.jpg'),
-                          )),
-                      Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              information.title,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 12),
-                              decoration: BoxDecoration(
-                                  color: Colors.red.shade800,
-                                  borderRadius: BorderRadius.circular(1000)),
-                              child: Text(
-                                information.type,
-                                style: TextStyle(color: neutral06),
-                              ),
-                            )
-                          ],
+                        height: double.infinity,
+                        child: ClipRRect(
+                          child: Image.network(
+                            'https://i.pinimg.com/474x/ae/bd/32/aebd3210fda7a94ff810e0a9abb99715.jpg',
+                          ),
                         ),
-                      ))
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                information.title,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade800,
+                                  borderRadius: BorderRadius.circular(1000),
+                                ),
+                                child: Text(
+                                  information.type,
+                                  style: TextStyle(color: neutral06),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
   }
 }

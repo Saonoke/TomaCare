@@ -31,7 +31,7 @@ class PlantsBloc extends Bloc<PlantsEvent, PlantsState> {
         // emit(AuthFailed('harus login'));
         print('unathorized');
       } catch (e) {
-        emit(PlantsFailed(message: 'error cok'));
+        emit(PlantsFailed(message: 'Gagal membuka.'));
       }
     });
 
@@ -43,7 +43,7 @@ class PlantsBloc extends Bloc<PlantsEvent, PlantsState> {
 
         emit(PlantsSuccess(plants: [plant]));
       } catch (e) {
-        emit(PlantsFailed(message: 'error cok dancok'));
+        emit(PlantsFailed(message: 'Gagal Membuka'));
       }
     });
 
@@ -55,7 +55,32 @@ class PlantsBloc extends Bloc<PlantsEvent, PlantsState> {
 
         emit(PlantsMessage(message: 'berhasil ditambah', plant: plant));
       } catch (e) {
-        emit(PlantsFailed(message: 'error cokk'));
+        emit(PlantsFailed(message: 'Gagal Menambah Tanaman.'));
+      }
+    });
+
+    on<PlantEdit>((event, emit) async {
+      emit(PlantsLoading());
+      try {
+        Plant plant = Plant(
+            id: event.id, title: event.title, condition: "", image_path: "");
+
+        plant = await plantService.editPlant(plant: plant);
+
+        emit(PlantsMessage(message: 'Berhasil diubah', plant: plant));
+      } catch (e) {
+        emit(PlantsFailed(message: 'Gagal merubah tanaman. Coba lagi...'));
+      }
+    });
+
+    on<PlantDelete>((event, emit) async {
+      emit(PlantsLoading());
+      try {
+        await plantService.deletePlant(id: event.id);
+
+        emit(PlantDeleteSuccess());
+      } catch (e) {
+        emit(PlantsFailed(message: 'Gagal merubah tanaman. Coba lagi...'));
       }
     });
   }

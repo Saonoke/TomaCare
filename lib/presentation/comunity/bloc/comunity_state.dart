@@ -15,6 +15,9 @@ class ComunityLoaded extends ComunityState {
   final List<Map<String, dynamic>> posts;
 
   const ComunityLoaded(this.posts);
+
+  @override
+  List<Object> get props => [posts];
 }
 
 class ComunityPostLoading extends ComunityState {}
