@@ -13,22 +13,36 @@ import 'package:tomacare/presentation/weather/bloc/weather_bloc.dart';
 import 'package:http/http.dart' as http;
 
 class WeatherPages extends StatelessWidget {
-  const WeatherPages({super.key, required this.position});
+  const WeatherPages(
+      {super.key,
+      required this.position,
+      required this.conditon,
+      required this.temperature});
   final Position? position;
+  final WeatherCondition conditon;
+  final double temperature;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => WeatherBloc(),
       child: WeatherScreen(
         position: position,
+        conditon: conditon,
+        temperature: temperature,
       ),
     );
   }
 }
 
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({super.key, required this.position});
+  const WeatherScreen(
+      {super.key,
+      required this.position,
+      required this.conditon,
+      required this.temperature});
   final Position? position;
+  final WeatherCondition conditon;
+  final double temperature;
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
 }
@@ -68,7 +82,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   return Container(
                     width: double.infinity,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
@@ -78,46 +91,112 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               fontWeight: FontWeight.bold,
                               color: neutral06),
                         ),
-                        weatherIcon(WeatherCondition.clear),
+                        weatherIcon(widget.conditon),
                         Text(
-                          '18' + '℃',
+                          widget.temperature.round().toString() + '℃',
                           style: TextStyle(
                               fontSize: 54,
                               fontWeight: FontWeight.bold,
                               color: neutral06),
                         ),
                         Text(
-                          state.weathers[0].weatherCondition.name,
+                          widget.conditon.name,
                           style: TextStyle(fontSize: 16, color: neutral06),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          width: double.maxFinite,
-                          height: 160,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: weathers.length,
-                            itemBuilder: (context, index) {
-                              final Weather weather = weathers[index];
-                              return Container(
-                                margin: EdgeInsets.only(right: 12),
-                                width: 120,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      DateFormat('HH:mm')
-                                          .format(DateTime.parse(weather.time)),
-                                      style: TextStyle(color: neutral06),
-                                    ),
-                                    weatherIcon(weather.weatherCondition),
-                                    Text(
-                                      weather.temperature.toString() + '℃',
-                                      style: TextStyle(color: neutral06),
-                                    )
-                                  ],
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: neutral06,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16))),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 12),
+                            width: double.maxFinite,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Waktu penyemprotan',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
                                 ),
-                              );
-                            },
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                      'Waktu terbaik untuk menyemprot berdasarkan kondisi cuaca'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  width: double.maxFinite,
+                                  height: 120,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: weathers.length,
+                                    itemBuilder: (context, index) {
+                                      final Weather weather = weathers[index];
+                                      return Container(
+                                        margin: EdgeInsets.only(right: 12),
+                                        width: 120,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            weather.weatherCondition ==
+                                                    WeatherCondition.cerah
+                                                ? Icon(Iconsax.close_circle)
+                                                : Icon(Iconsax.tick_circle),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              DateFormat('HH:mm').format(
+                                                  DateTime.parse(weather.time)),
+                                              style:
+                                                  TextStyle(color: neutral01),
+                                            ),
+                                            Text(
+                                              weather.temperature.toString() +
+                                                  '℃',
+                                              style:
+                                                  TextStyle(color: neutral01),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
+                                  child: Text(
+                                    'Keterangan',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                                Container(
+                                  height: 200,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Iconsax.close_circle),
+                                      Text('Tidak menguntungkan'),
+                                      Icon(Iconsax.tick_circle),
+                                      Text('Optimal'),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -132,25 +211,25 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   Icon weatherIcon(WeatherCondition condition) {
     switch (condition) {
-      case WeatherCondition.clear:
+      case WeatherCondition.cerah:
         return Icon(
           Iconsax.sun_1,
           size: 92,
           color: neutral06,
         );
-      case WeatherCondition.cloudy:
+      case WeatherCondition.berawan:
         return Icon(
           Iconsax.cloud_sunny,
           size: 92,
           color: neutral06,
         );
-      case WeatherCondition.rainy:
+      case WeatherCondition.hujan:
         return Icon(
           Iconsax.cloud_drizzle,
           size: 92,
           color: neutral06,
         );
-      case WeatherCondition.snowy:
+      case WeatherCondition.salju:
         return Icon(
           Iconsax.sun,
           size: 92,

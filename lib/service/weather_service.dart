@@ -13,7 +13,7 @@ class WeatherService {
   Future<Map<String, dynamic>> getWeatherDetail(
       double longitude, double latitude) async {
     final url = Uri.parse(
-        'https://api.open-meteo.com/v1/forecast?latitude=-7.9797&longitude=112.6304&current=temperature_2m&hourly=temperature_2m,weather_code&timezone=auto');
+        'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&hourly=temperature_2m,weather_code&timezone=auto&forecast_days=1');
     final response = await http.get(url);
     return jsonDecode(response.body);
   }

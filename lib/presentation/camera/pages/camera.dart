@@ -301,28 +301,40 @@ class DisplayPictureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: neutral03,
       appBar: AppBar(
-        title: const Text('Image'),
+        backgroundColor: neutral06,
+        title: const Text('Diagnosis'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            Container(
+              color: neutral03,
+              padding: EdgeInsets.all(16),
               width: double.maxFinite,
-              child: ClipRRect(
-                child: Image.file(
-                  File(image!.path),
-                  fit: BoxFit.cover,
-                ),
+              child: Column(
+                children: [
+                  Text(
+                    predicted,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(percentage.toInt().toString() + '%',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.file(
+                      File(image!.path),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Text(
-              predicted,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(percentage.toInt().toString() + '%',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             Container(
+              decoration: BoxDecoration(
+                  color: neutral06, borderRadius: BorderRadius.circular(16)),
               padding: EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,11 +342,20 @@ class DisplayPictureScreen extends StatelessWidget {
                   Text('Tentang ' + predicted,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(
+                    information.type,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text(information.content)
                 ],
               ),
             ),
+            SizedBox(
+              height: 16,
+            ),
             Container(
+              decoration: BoxDecoration(
+                  color: neutral06, borderRadius: BorderRadius.circular(16)),
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,11 +367,14 @@ class DisplayPictureScreen extends StatelessWidget {
                   Padding(padding: const EdgeInsets.only(bottom: 6))
                 ],
               ),
-            )
+            ),
+            Padding(padding: const EdgeInsets.only(bottom: 16))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryColor,
+        foregroundColor: neutral06,
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CreatePlantPages(

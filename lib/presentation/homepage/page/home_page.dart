@@ -150,7 +150,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             )
                                           ],
                                         ),
-                                        weatherIcon(WeatherCondition.clear)
+                                        weatherIcon(WeatherCondition.cerah)
                                       ],
                                     ),
                                   ])),
@@ -205,7 +205,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             )
                                           ],
                                         ),
-                                        weatherIcon(WeatherCondition.clear)
+                                        weatherIcon(WeatherCondition.cerah)
                                       ],
                                     ),
                                   ])),
@@ -218,8 +218,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          WeatherPages(position: position)));
+                                      builder: (context) => WeatherPages(
+                                            position: position,
+                                            conditon: state.weatherCondition,
+                                            temperature: state.temperature,
+                                          )));
                             },
                             child: WeatherCard(state));
                       default:
@@ -665,25 +668,25 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   Icon weatherIcon(WeatherCondition condition) {
     switch (condition) {
-      case WeatherCondition.clear:
+      case WeatherCondition.cerah:
         return Icon(
           Iconsax.sun_1,
           size: 92,
           color: neutral06,
         );
-      case WeatherCondition.cloudy:
+      case WeatherCondition.berawan:
         return Icon(
           Iconsax.cloud_sunny,
           size: 92,
           color: neutral06,
         );
-      case WeatherCondition.rainy:
+      case WeatherCondition.hujan:
         return Icon(
           Iconsax.cloud_drizzle,
           size: 92,
           color: neutral06,
         );
-      case WeatherCondition.snowy:
+      case WeatherCondition.salju:
         return Icon(
           Iconsax.sun,
           size: 92,

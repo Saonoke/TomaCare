@@ -9,10 +9,10 @@ part 'weather_event.dart';
 part 'weather_state.dart';
 
 enum WeatherCondition {
-  clear,
-  rainy,
-  cloudy,
-  snowy,
+  cerah,
+  hujan,
+  berawan,
+  salju,
   unknown,
 }
 
@@ -76,13 +76,13 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 WeatherCondition getWeatherCondition(int weather_code) {
   switch (weather_code) {
     case 0:
-      return WeatherCondition.clear;
+      return WeatherCondition.cerah;
     case 1:
     case 2:
     case 3:
     case 45:
     case 48:
-      return WeatherCondition.cloudy;
+      return WeatherCondition.berawan;
     case 51:
     case 53:
     case 55:
@@ -99,14 +99,14 @@ WeatherCondition getWeatherCondition(int weather_code) {
     case 95:
     case 96:
     case 99:
-      return WeatherCondition.rainy;
+      return WeatherCondition.hujan;
     case 71:
     case 73:
     case 75:
     case 77:
     case 85:
     case 86:
-      return WeatherCondition.snowy;
+      return WeatherCondition.salju;
     default:
       return WeatherCondition.unknown;
   }
