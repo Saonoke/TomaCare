@@ -49,7 +49,14 @@ class _AddplantState extends State<Addplant> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: neutral06,
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: neutral06,
+        centerTitle: true,
+        title: Text(
+          'Tambah tumbuhan',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(

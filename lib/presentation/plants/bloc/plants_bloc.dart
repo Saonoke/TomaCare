@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tomacare/domain/entities/plant.dart';
 import 'package:tomacare/domain/entities/task.dart';
+import 'package:tomacare/presentation/Plants/bloc/plants_bloc.dart';
 import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/service/Plant_service.dart';
 import 'package:tomacare/service/save_auth.dart';
@@ -63,12 +64,38 @@ class PlantsBloc extends Bloc<PlantsEvent, PlantsState> {
       emit(PlantsLoading());
       try {
         Plant plant = Plant(
-            id: event.id, title: event.title, condition: "", image_path: "");
+          id: event.id,
+          title: event.title,
+          condition: "",
+          image_path: "",
+        );
 
         plant = await plantService.editPlant(plant: plant);
 
         emit(PlantsMessage(message: 'Berhasil diubah', plant: plant));
       } catch (e) {
+        emit(PlantsFailed(message: 'Gagal merubah tanaman. Coba lagi...'));
+      }
+    });
+    on<PlantsDone>((event, emit) async {
+      emit(PlantsLoading());
+      await Future.delayed(Duration(seconds: 3));
+      try {
+        Plant plant = Plant(
+            id: event.id,
+            title: event.title,
+            condition: "",
+            image_path: "",
+            done: event.done);
+
+        plant = await plantService.editPlant(plant: plant);
+        plant = await plantService.getPlant(id: plant.id!);
+        emit(PlantsMessage(message: 'berhasil diselesaikan', plant: plant));
+
+        emit(PlantsSuccess(plants: [plant]));
+      } catch (e) {
+        print('tesssssssssssssss');
+        print(e);
         emit(PlantsFailed(message: 'Gagal merubah tanaman. Coba lagi...'));
       }
     });

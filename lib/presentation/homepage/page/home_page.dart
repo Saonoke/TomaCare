@@ -533,7 +533,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       ),
                     ),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final cameras = await availableCameras();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CameraPage(cameras: cameras)));
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                           minimumSize: Size(double.infinity, 50),
