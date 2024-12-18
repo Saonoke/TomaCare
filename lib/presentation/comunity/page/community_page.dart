@@ -69,7 +69,6 @@ class _CommunityPageState extends State<CommunityPageList> {
               ),
             ),
             Expanded(
-
               child: BlocListener<ComunityBloc, ComunityState>(
                 listener: (context, state) {
                   if (state is ComunityLoaded) {
@@ -81,7 +80,37 @@ class _CommunityPageState extends State<CommunityPageList> {
                 child: BlocBuilder<ComunityBloc, ComunityState>(
                   builder: (context, state) {
                     if (state is ComunityLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Skeletonizer(
+                            enabled: true,
+                            enableSwitchAnimation: true,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              width: double.maxFinite,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    color: neutral01,
+                                    height: 100,
+                                    width: double.maxFinite,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.abc),
+                                      Text('krisna andika')
+                                    ],
+                                  ),
+                                  Text(
+                                      'description lalalalalalalalalalalalallalalalalalala')
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     } else if (state is ComunityLoaded) {
                       if (posts.isEmpty) {
                         return const Center(
@@ -113,7 +142,6 @@ class _CommunityPageState extends State<CommunityPageList> {
                         context.read<AuthBloc>().add(Logout());
                       }
                       return Center(
-
                         child: Text(
                           state.message,
                           style: const TextStyle(
@@ -134,7 +162,6 @@ class _CommunityPageState extends State<CommunityPageList> {
     );
   }
 }
-
 
 class PostCard extends StatefulWidget {
   final int postId;
@@ -194,9 +221,11 @@ class _PostCardState extends State<PostCard> {
               MaterialPageRoute(
                   builder: (context) => PostDetailPage(
                         postId: widget.postId,
-                      ))).then((value) {
-            context.read<ComunityBloc>().add(ComunityStarted());
-                      },);
+                      ))).then(
+            (value) {
+              context.read<ComunityBloc>().add(ComunityStarted());
+            },
+          );
         },
         child: Card(
           color: neutral06,

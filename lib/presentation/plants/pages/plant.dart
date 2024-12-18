@@ -137,88 +137,105 @@ class _PlantListState extends State<PlantList> {
                                       color: neutral01),
                                 ),
                               ),
-                              Container(
-                                  height: 500,
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: ListView.builder(
-                                    itemCount: plants.length,
-                                    itemBuilder: (context, index) {
-                                      final Plant plant = plants[index];
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetailPlantPage(
-                                                        index: plant.id!,
-                                                      )));
-                                        },
-                                        child: Card(
-                                            elevation: 1.5,
-                                            color: neutral06,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    width: double.maxFinite,
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      child: Image.network(
-                                                        plant.image_path,
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
+                              plants.isEmpty
+                                  ? Container(
+                                      height: 300,
+                                      child: Center(
+                                          child: Text(
+                                              'Anda belum membuat tumbuhan',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                    )
+                                  : Container(
+                                      height: 500,
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: ListView.builder(
+                                        itemCount: plants.length,
+                                        itemBuilder: (context, index) {
+                                          final Plant plant = plants[index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailPlantPage(
+                                                            index: plant.id!,
+                                                          )));
+                                            },
+                                            child: Card(
+                                                elevation: 1.5,
+                                                color: neutral06,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: double.maxFinite,
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          child: Image.network(
+                                                            plant.image_path,
+                                                            width:
+                                                                double.infinity,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 5,
+                                                                horizontal: 16),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              plant.title,
+                                                              style: TextStyle(
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      neutral01),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+                                                            Text(
+                                                              plant.condition,
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color:
+                                                                      neutral01),
+                                                            ),
+                                                            Text(
+                                                              plant.date
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color:
+                                                                      neutral01),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5,
-                                                            horizontal: 16),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          plant.title,
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: neutral01),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-                                                        Text(
-                                                          plant.condition,
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: neutral01),
-                                                        ),
-                                                        Text(
-                                                          plant.date.toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: neutral01),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            )),
-                                      );
-                                    },
-                                  )),
+                                                )),
+                                          );
+                                        },
+                                      )),
                               Padding(
                                   padding: const EdgeInsets.only(bottom: 64))
                             ],

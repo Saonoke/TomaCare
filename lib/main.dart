@@ -6,7 +6,7 @@ import 'package:tomacare/presentation/auth/bloc/auth_bloc.dart';
 import 'package:tomacare/presentation/auth/page/register.dart';
 import 'package:tomacare/presentation/homepage/page/home_page.dart';
 import 'package:tomacare/presentation/splashscreen.dart';
-import 'package:tomacare/presentation/weather/pages/weather_pages.dart';
+
 import 'presentation/auth/page/login.dart';
 
 void main() {

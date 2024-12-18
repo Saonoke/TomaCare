@@ -61,6 +61,7 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: neutral06,
       body: BlocConsumer<PlantsBloc, PlantsState>(builder: (context, state) {
         switch (state) {
           case PlantsInitial():
@@ -363,6 +364,7 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
                                                 });
                                           },
                                           child: Card.outlined(
+                                            color: neutral06,
                                             child: ListTile(
                                               title: Text(task.title),
                                               trailing: task.done
@@ -378,7 +380,34 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
                                     );
                                   },
                                 ),
-                              )
+                              ),
+                        if (indexTask == 6)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.read<PlantsBloc>().add(PlantsDone(
+                                    id: widget.index,
+                                    title: plant.title,
+                                    done: true));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryColor,
+                                minimumSize: const Size(double.infinity, 50),
+                              ),
+                              child: const Text(
+                                'Selesai',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  height: 22 / 17,
+                                  letterSpacing: -0.408,
+                                ),
+                              ),
+                            ),
+                          )
                       ],
                     ),
                   ),
@@ -395,6 +424,23 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
       }, listener: (context, state) {
         if (state is PlantDeleteSuccess) {
           Navigator.pop(context);
+        } else if (state is PlantsMessage) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Tes'),
+                  content: const Text('Berhasil di selesaikan'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Selesai'))
+                  ],
+                );
+              });
         }
       }),
     );

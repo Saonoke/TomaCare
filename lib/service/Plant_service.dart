@@ -95,7 +95,8 @@ class PlantService {
     };
 
     final response = await http.put(url,
-        headers: headers, body: jsonEncode({"title": plant.title}));
+        headers: headers,
+        body: jsonEncode({"title": plant.title, "done": plant.done ?? false}));
 
     if (response.statusCode == HttpStatus.ok) {
       return Plant.fromJson(jsonDecode(response.body));

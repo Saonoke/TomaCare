@@ -346,6 +346,7 @@ class DisplayPictureScreen extends StatelessWidget {
                     information.type,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
+                  Divider(),
                   Text(information.content)
                 ],
               ),
@@ -361,8 +362,11 @@ class DisplayPictureScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Pengobatan',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor)),
+                  Divider(),
                   Text(information.medicine),
                   Padding(padding: const EdgeInsets.only(bottom: 6))
                 ],

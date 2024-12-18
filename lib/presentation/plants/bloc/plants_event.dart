@@ -37,6 +37,17 @@ class PlantEdit extends PlantsEvent {
   List<Object> get props => [id, title];
 }
 
+class PlantsDone extends PlantsEvent {
+  final int id;
+  final String title;
+  final bool done;
+
+  const PlantsDone({required this.id, required this.title, required this.done});
+
+  @override
+  List<Object> get props => [id, title];
+}
+
 class PlantDelete extends PlantsEvent {
   final int id;
 
